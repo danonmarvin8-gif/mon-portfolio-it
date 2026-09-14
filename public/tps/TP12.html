@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP12 — Analyseur de données JS | Portfolio BTS SIO</title>
+    <link rel="stylesheet" href="./tp-style.css">
+</head>
+<body>
+
+<header class="tp-header">
+    <a href="../../" class="back">← Retour au portfolio</a>
+    <span class="breadcrumb">Projets Scolaires / <span>TP12 — Analyseur de données</span></span>
+</header>
+
+<div class="tp-wrapper">
+    <div class="tp-title">
+        <div class="tag">TP12 · 2025</div>
+        <h1>Analyseur de données JS</h1>
+        <p>Traitement dynamique d'une liste de valeurs : moyenne, tri, comparaison, génération aléatoire.</p>
+    </div>
+
+    <div class="card">
+        <h2>Saisie des données</h2>
+        <label>Entrez des nombres séparés par des virgules</label>
+        <input type="text" id="donnees" placeholder="ex: 12, 8, 17, 5, 14, 9">
+        <div class="btn-row">
+            <button class="btn" onclick="analyser()">Analyser</button>
+            <button class="btn btn-outline" onclick="vider()">Vider</button>
+            <button class="btn btn-secondary" onclick="genererAleatoire()">🎲 Générer données</button>
+        </div>
+    </div>
+
+    <div id="resultats" style="display:none">
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px;">
+            <div class="card" style="margin:0; text-align:center">
+                <div style="font-size:1.5rem; font-weight:700; color:var(--accent)" id="res-moyenne">—</div>
+                <div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px">Moyenne</div>
+            </div>
+            <div class="card" style="margin:0; text-align:center">
+                <div style="font-size:1.5rem; font-weight:700; color:var(--accent2)" id="res-min">—</div>
+                <div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px">Minimum</div>
+            </div>
+            <div class="card" style="margin:0; text-align:center">
+                <div style="font-size:1.5rem; font-weight:700; color:var(--accent2)" id="res-max">—</div>
+                <div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px">Maximum</div>
+            </div>
+            <div class="card" style="margin:0; text-align:center">
+                <div style="font-size:1.5rem; font-weight:700; color:var(--accent-green)" id="res-count">—</div>
+                <div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px">Valeurs</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Données triées</h2>
+            <div id="res-tries" class="result-box"></div>
+        </div>
+
+        <div class="card">
+            <h2>Répartition pair / impair</h2>
+            <div id="res-parite" class="result-box"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Technologies utilisées</h2>
+        <span class="tech-tag">HTML</span>
+        <span class="tech-tag">CSS</span>
+        <span class="tech-tag">JavaScript</span>
+        <span class="tech-tag">Tableaux</span>
+        <span class="tech-tag">Array.sort()</span>
+    </div>
+</div>
+
+<script>
+function analyser() {
+    var raw = document.getElementById('donnees').value.trim();
+    if (!raw) { alert('Saisissez des données d\'abord.'); return; }
+
+    var vals = raw.split(',').map(function(v) { return parseFloat(v.trim()); }).filter(function(v) { return !isNaN(v); });
+    if (vals.length === 0) { alert('Aucun nombre valide trouvé.'); return; }
+
+    var somme = 0;
+    for (var i = 0; i < vals.length; i++) somme += vals[i];
+    var moyenne = somme / vals.length;
+
+    var min = Math.min.apply(null, vals);
+    var max = Math.max.apply(null, vals);
+
+    document.getElementById('res-moyenne').textContent = moyenne.toFixed(2);
+    document.getElementById('res-min').textContent = min;
+    document.getElementById('res-max').textContent = max;
+    document.getElementById('res-count').textContent = vals.length;
+
+    var tries = vals.slice().sort(function(a, b) { return a - b; });
+    document.getElementById('res-tries').textContent = 'Croissant : ' + tries.join(' < ') + '\nDécroissant : ' + tries.slice().reverse().join(' > ');
+
+    var pairs = vals.filter(function(v) { return Number.isInteger(v) && v % 2 === 0; });
+    var impairs = vals.filter(function(v) { return Number.isInteger(v) && v % 2 !== 0; });
+    document.getElementById('res-parite').textContent =
+        'Pairs (' + pairs.length + ') : ' + (pairs.length ? pairs.join(', ') : 'aucun') +
+        '\nImpairs (' + impairs.length + ') : ' + (impairs.length ? impairs.join(', ') : 'aucun');
+
+    document.getElementById('resultats').style.display = 'block';
+}
+
+function vider() {
+    document.getElementById('donnees').value = '';
+    document.getElementById('resultats').style.display = 'none';
+}
+
+function genererAleatoire() {
+    var nb = Math.floor(Math.random() * 6) + 5;
+    var vals = [];
+    for (var i = 0; i < nb; i++) {
+        vals.push(Math.floor(Math.random() * 20) + 1);
+    }
+    document.getElementById('donnees').value = vals.join(', ');
+}
+</script>
+
+</body>
+</html>

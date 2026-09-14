@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP11 — Calculatrice multi-fonctions JS | Portfolio BTS SIO</title>
+    <link rel="stylesheet" href="./tp-style.css">
+</head>
+<body>
+
+<header class="tp-header">
+    <a href="../../" class="back">← Retour au portfolio</a>
+    <span class="breadcrumb">Projets Scolaires / <span>TP11 — Calculatrice avancée JS</span></span>
+</header>
+
+<div class="tp-wrapper">
+    <div class="tp-title">
+        <div class="tag">TP11 · 2025</div>
+        <h1>Calculatrice multi-fonctions JS</h1>
+        <p>Outil de calcul scientifique avec gestion des fréquences, conversion d'unités et opérations avancées.</p>
+    </div>
+
+    <div class="card">
+        <h2>Calcul sur deux valeurs</h2>
+        <div class="grid-2">
+            <div>
+                <label>Valeur A</label>
+                <input type="number" id="f1" placeholder="ex: 440">
+            </div>
+            <div>
+                <label>Valeur B</label>
+                <input type="number" id="f2" placeholder="ex: 220">
+            </div>
+        </div>
+
+        <div class="btn-row">
+            <button class="btn" onclick="additionner()">+ Additionner</button>
+            <button class="btn btn-secondary" onclick="soustraire()">− Soustraire</button>
+            <button class="btn btn-secondary" onclick="multiplier()">× Multiplier</button>
+            <button class="btn btn-secondary" onclick="diviser()">÷ Diviser</button>
+        </div>
+
+        <div id="result-calc" class="result-box empty mt-24">Résultat ici.</div>
+    </div>
+
+    <div class="card">
+        <h2>Fonctions scientifiques</h2>
+        <div class="feature-grid">
+            <div class="feature-card" onclick="calcPuissance()">
+                <div class="icon">🔢</div>
+                <h3>Puissance</h3>
+                <p>Calcule A exposant B (A^B)</p>
+            </div>
+            <div class="feature-card" onclick="calcRacine()">
+                <div class="icon">√</div>
+                <h3>Racine carrée</h3>
+                <p>Calcule √A et √B</p>
+            </div>
+            <div class="feature-card" onclick="testParite()">
+                <div class="icon">⚖️</div>
+                <h3>Parité</h3>
+                <p>Teste si A et B sont pairs ou impairs</p>
+            </div>
+            <div class="feature-card" onclick="pgcdCalc()">
+                <div class="icon">🔗</div>
+                <h3>PGCD</h3>
+                <p>Plus Grand Commun Diviseur de A et B</p>
+            </div>
+        </div>
+        <div id="result-sci" class="result-box empty mt-24">Résultat ici.</div>
+    </div>
+
+    <div class="card">
+        <h2>Technologies utilisées</h2>
+        <span class="tech-tag">HTML</span>
+        <span class="tech-tag">CSS</span>
+        <span class="tech-tag">JavaScript</span>
+        <span class="tech-tag">Fonctions avancées</span>
+        <span class="tech-tag">Math API</span>
+    </div>
+</div>
+
+<script>
+function getAB() {
+    var a = parseFloat(document.getElementById('f1').value);
+    var b = parseFloat(document.getElementById('f2').value);
+    return { a: a, b: b };
+}
+
+function setCalc(txt) {
+    var el = document.getElementById('result-calc');
+    el.textContent = txt;
+    el.className = 'result-box';
+}
+
+function setSci(txt) {
+    var el = document.getElementById('result-sci');
+    el.textContent = txt;
+    el.className = 'result-box';
+}
+
+function checkAB() {
+    var v = getAB();
+    if (isNaN(v.a) || isNaN(v.b)) {
+        setCalc('Veuillez saisir les valeurs A et B.');
+        return null;
+    }
+    return v;
+}
+
+function additionner() {
+    var v = checkAB(); if (!v) return;
+    setCalc(v.a + ' + ' + v.b + ' = ' + (v.a + v.b));
+}
+
+function soustraire() {
+    var v = checkAB(); if (!v) return;
+    setCalc(v.a + ' − ' + v.b + ' = ' + (v.a - v.b));
+}
+
+function multiplier() {
+    var v = checkAB(); if (!v) return;
+    setCalc(v.a + ' × ' + v.b + ' = ' + (v.a * v.b));
+}
+
+function diviser() {
+    var v = checkAB(); if (!v) return;
+    if (v.b === 0) { setCalc('Erreur : division par zéro.'); return; }
+    setCalc(v.a + ' ÷ ' + v.b + ' = ' + (v.a / v.b).toFixed(4));
+}
+
+function calcPuissance() {
+    var v = checkAB(); if (!v) return;
+    setSci(v.a + ' ^ ' + v.b + ' = ' + Math.pow(v.a, v.b));
+}
+
+function calcRacine() {
+    var v = checkAB(); if (!v) return;
+    var ra = v.a >= 0 ? Math.sqrt(v.a).toFixed(4) : 'impossible (négatif)';
+    var rb = v.b >= 0 ? Math.sqrt(v.b).toFixed(4) : 'impossible (négatif)';
+    setSci('√' + v.a + ' = ' + ra + '\n√' + v.b + ' = ' + rb);
+}
+
+function testParite() {
+    var v = checkAB(); if (!v) return;
+    var pa = Number.isInteger(v.a) ? (v.a % 2 === 0 ? 'pair' : 'impair') : 'non entier';
+    var pb = Number.isInteger(v.b) ? (v.b % 2 === 0 ? 'pair' : 'impair') : 'non entier';
+    setSci('A (' + v.a + ') est ' + pa + '\nB (' + v.b + ') est ' + pb);
+}
+
+function pgcdCalc() {
+    var v = checkAB(); if (!v) return;
+    var a = Math.abs(Math.round(v.a));
+    var b = Math.abs(Math.round(v.b));
+    if (a === 0 || b === 0) { setSci('PGCD non défini avec 0.'); return; }
+    var orig_a = a, orig_b = b;
+    while (b !== 0) { var t = b; b = a % b; a = t; }
+    setSci('PGCD(' + orig_a + ', ' + orig_b + ') = ' + a);
+}
+</script>
+
+</body>
+</html>

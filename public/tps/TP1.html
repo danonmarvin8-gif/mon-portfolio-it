@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP1 — Boutique en ligne | Portfolio BTS SIO</title>
+    <link rel="stylesheet" href="./tp-style.css">
+</head>
+<body>
+
+<header class="tp-header">
+    <a href="../../" class="back">← Retour au portfolio</a>
+    <span class="breadcrumb">Projets Scolaires / <span>TP1 — Boutique HTML</span></span>
+</header>
+
+<div class="tp-wrapper">
+    <div class="tp-title">
+        <div class="tag">TP1 · 2024</div>
+        <h1>Boutique en ligne — HTML/CSS</h1>
+        <p>Premier projet de mise en page complexe : une boutique avec grille de produits, panier latéral et styles CSS.</p>
+    </div>
+
+    <div class="card">
+        <h2>Aperçu</h2>
+        <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 0.9rem;">
+            Ce TP consistait à recréer une page boutique avec une grille de produits, une sidebar panier et quelques effets CSS de survol.
+            C'était le premier TP où on travaillait vraiment sur la mise en page avec <code style="color:var(--accent)">display: grid</code>.
+        </p>
+
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
+
+            <!-- Produits -->
+            <div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                    <div class="feature-card" style="cursor:default">
+                        <div class="icon">💻</div>
+                        <h3>MacBook Air M2</h3>
+                        <p>Ordinateur ultra-fin, 13 pouces</p>
+                        <p style="color: var(--accent); font-weight: 700; margin-top: 8px;">1 299 €</p>
+                        <button class="btn mt-16" onclick="ajouterPanier('MacBook Air M2', 1299)" style="width:100%; justify-content:center; margin-bottom:0">Ajouter</button>
+                    </div>
+                    <div class="feature-card" style="cursor:default">
+                        <div class="icon">🖥️</div>
+                        <h3>Écran LG 27"</h3>
+                        <p>Dalle IPS 4K, 60 Hz</p>
+                        <p style="color: var(--accent); font-weight: 700; margin-top: 8px;">349 €</p>
+                        <button class="btn mt-16" onclick="ajouterPanier('Écran LG 27 pouces', 349)" style="width:100%; justify-content:center; margin-bottom:0">Ajouter</button>
+                    </div>
+                    <div class="feature-card" style="cursor:default">
+                        <div class="icon">⌨️</div>
+                        <h3>Clavier mécanique</h3>
+                        <p>Switches Cherry MX Red</p>
+                        <p style="color: var(--accent); font-weight: 700; margin-top: 8px;">89 €</p>
+                        <button class="btn mt-16" onclick="ajouterPanier('Clavier mécanique', 89)" style="width:100%; justify-content:center; margin-bottom:0">Ajouter</button>
+                    </div>
+                    <div class="feature-card" style="cursor:default">
+                        <div class="icon">🖱️</div>
+                        <h3>Souris sans fil</h3>
+                        <p>Logitech MX Master 3</p>
+                        <p style="color: var(--accent); font-weight: 700; margin-top: 8px;">99 €</p>
+                        <button class="btn mt-16" onclick="ajouterPanier('Souris sans fil', 99)" style="width:100%; justify-content:center; margin-bottom:0">Ajouter</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panier -->
+            <div>
+                <div class="card" style="margin:0; height: 100%;">
+                    <h2 style="border:none; padding:0; margin-bottom:12px">🛒 Panier</h2>
+                    <div id="panier-liste" style="font-size: 0.85rem; color: var(--text-muted); min-height: 80px;">
+                        Aucun article ajouté.
+                    </div>
+                    <div style="border-top: 1px solid var(--border); margin-top: 14px; padding-top: 14px;">
+                        <div style="display:flex; justify-content:space-between; font-weight:700; margin-bottom:12px;">
+                            <span>Total</span>
+                            <span id="total" style="color: var(--accent)">0 €</span>
+                        </div>
+                        <button class="btn" style="width:100%; justify-content:center;" onclick="viderPanier()">Vider le panier</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Technologies utilisées</h2>
+        <span class="tech-tag">HTML</span>
+        <span class="tech-tag">CSS</span>
+        <span class="tech-tag">JavaScript</span>
+        <span class="tech-tag">CSS Grid</span>
+    </div>
+</div>
+
+<script>
+var panier = [];
+
+function ajouterPanier(nom, prix) {
+    panier.push({ nom: nom, prix: prix });
+    afficherPanier();
+}
+
+function afficherPanier() {
+    var liste = document.getElementById('panier-liste');
+    var total = document.getElementById('total');
+
+    if (panier.length == 0) {
+        liste.innerHTML = 'Aucun article ajouté.';
+        total.textContent = '0 €';
+        return;
+    }
+
+    var html = '';
+    var somme = 0;
+    for (var i = 0; i < panier.length; i++) {
+        html += '<div style="display:flex; justify-content:space-between; padding: 5px 0; border-bottom: 1px solid var(--border);">';
+        html += '<span>' + panier[i].nom + '</span>';
+        html += '<span style="color: var(--accent-green)">' + panier[i].prix + ' €</span>';
+        html += '</div>';
+        somme += panier[i].prix;
+    }
+
+    liste.innerHTML = html;
+    total.textContent = somme + ' €';
+}
+
+function viderPanier() {
+    panier = [];
+    afficherPanier();
+}
+</script>
+
+</body>
+</html>

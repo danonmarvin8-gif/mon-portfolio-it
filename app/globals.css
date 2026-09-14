@@ -1,6 +1,19 @@
 /* Note: Google Fonts est géré par next/font dans layout.tsx — import redondant supprimé pour optimiser le LCP */
 @import "tailwindcss";
 
+/* ─── Scroll fluide TikTok-style ─────────────────────────────── */
+/* proximity : le browser snape seulement quand on est proche d'un snap-point, */
+/* pas si on scrolle au milieu d'une grande section — aucun JS requis. */
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y proximity;
+}
+
+.snap-section {
+  scroll-snap-align: start;
+}
+
+
 /* ─── Tailwind v4 Theme Extensions ──────────────────────────── */
 @theme {
   --color-void: #050508;

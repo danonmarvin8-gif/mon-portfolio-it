@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP9 — Fonctions JS | Portfolio BTS SIO</title>
+    <link rel="stylesheet" href="./tp-style.css">
+</head>
+<body>
+
+<header class="tp-header">
+    <a href="../../" class="back">← Retour au portfolio</a>
+    <span class="breadcrumb">Projets Scolaires / <span>TP9 — Fonctions JS</span></span>
+</header>
+
+<div class="tp-wrapper">
+    <div class="tp-title">
+        <div class="tag">TP9 · 2024</div>
+        <h1>Fonctions JavaScript interactives</h1>
+        <p>Manipulation de prompt/alert et de styles dynamiques via des fonctions JavaScript. Cliquez sur une carte pour exécuter.</p>
+    </div>
+
+    <div class="card">
+        <h2>Exercices interactifs</h2>
+        <div class="feature-grid">
+            <div class="feature-card" onclick="calcul_moyenne()">
+                <div class="icon">📊</div>
+                <h3>Calcul de moyenne</h3>
+                <p>Saisir 3 notes et obtenir la moyenne avec mention.</p>
+            </div>
+            <div class="feature-card" onclick="test_age()">
+                <div class="icon">🎂</div>
+                <h3>Vérification de l'âge</h3>
+                <p>Teste si la personne est mineure ou majeure.</p>
+            </div>
+            <div class="feature-card" onclick="simple_affichage()">
+                <div class="icon">👤</div>
+                <h3>Affichage Nom / Prénom</h3>
+                <p>Demande nom et prénom et les affiche formatés.</p>
+            </div>
+            <div class="feature-card" onclick="test_couleur()">
+                <div class="icon">🎨</div>
+                <h3>Changer le fond</h3>
+                <p>Modifie la couleur de fond via une saisie.</p>
+            </div>
+        </div>
+        <div id="tp9-result" class="result-box empty mt-24">Le résultat s'affichera ici.</div>
+    </div>
+
+    <div class="card">
+        <h2>Technologies utilisées</h2>
+        <span class="tech-tag">HTML</span>
+        <span class="tech-tag">CSS</span>
+        <span class="tech-tag">JavaScript</span>
+        <span class="tech-tag">Fonctions</span>
+        <span class="tech-tag">prompt / alert</span>
+    </div>
+</div>
+
+<script>
+function afficher(txt) {
+    var el = document.getElementById('tp9-result');
+    el.textContent = txt;
+    el.className = 'result-box';
+}
+
+function calcul_moyenne() {
+    var n1 = prompt('Donnez la première note (sur 20) :');
+    if (n1 === null) return;
+    var n2 = prompt('Donnez la deuxième note (sur 20) :');
+    if (n2 === null) return;
+    var n3 = prompt('Donnez la troisième note (sur 20) :');
+    if (n3 === null) return;
+
+    var somme = Number(n1) + Number(n2) + Number(n3);
+    var moyenne = somme / 3;
+
+    var mention = moyenne < 10 ? 'Non admis' : 'Admis';
+    afficher('Notes : ' + n1 + ', ' + n2 + ', ' + n3 + '\nMoyenne : ' + moyenne.toFixed(2) + ' / 20\n→ ' + mention);
+}
+
+function test_age() {
+    var age = prompt('Quel est votre âge ?');
+    if (age === null) return;
+    var statut = Number(age) < 18 ? 'Mineur(e)' : 'Majeur(e)';
+    afficher('Âge saisi : ' + age + ' ans\n→ ' + statut);
+}
+
+function simple_affichage() {
+    var nom = prompt('Donnez votre nom :');
+    if (nom === null) return;
+    var prenom = prompt('Donnez votre prénom :');
+    if (prenom === null) return;
+    afficher('Bonjour, ' + prenom + ' ' + nom.toUpperCase() + ' !');
+}
+
+function test_couleur() {
+    var couleur = prompt('Saisissez une couleur (rouge, bleu, vert, rose) :');
+    if (couleur === null) return;
+    var map = {
+        'rouge': '#b71c1c', 'red': '#b71c1c',
+        'bleu': '#1565c0', 'blue': '#1565c0',
+        'vert': '#1b5e20', 'green': '#1b5e20',
+        'rose': '#ad1457', 'pink': '#ad1457'
+    };
+    var hex = map[couleur.toLowerCase()];
+    if (hex) {
+        document.body.style.backgroundColor = hex;
+        afficher('Couleur "' + couleur + '" appliquée.');
+    } else {
+        afficher('Couleur "' + couleur + '" non reconnue. Essayez : rouge, bleu, vert, rose.');
+    }
+}
+</script>
+
+</body>
+</html>

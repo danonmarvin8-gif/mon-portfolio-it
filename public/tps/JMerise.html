@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JMerise — MCD Gestion Militaire | Portfolio BTS SIO</title>
+    <link rel="stylesheet" href="./tp-style.css">
+    <style>
+        .mcd-container { background: var(--bg-card2); border: 1px solid var(--border); border-radius: 10px; padding: 30px; overflow-x: auto; }
+        .mcd-entity { display: inline-block; background: #141418; border: 2px solid var(--accent); border-radius: 8px; min-width: 180px; vertical-align: top; }
+        .mcd-entity .entity-name { background: var(--accent); color: #fff; font-weight: 700; font-size: 0.85rem; padding: 8px 12px; text-transform: uppercase; letter-spacing: 0.05em; border-radius: 5px 5px 0 0; }
+        .mcd-entity .entity-body { padding: 10px 12px; }
+        .mcd-entity .attr { font-size: 0.8rem; color: var(--text-muted); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .mcd-entity .attr:last-child { border-bottom: none; }
+        .mcd-entity .attr.pk { color: var(--accent); font-weight: 600; }
+        .mcd-entity .attr.fk { color: var(--accent2); }
+        .mcd-assoc { display: inline-flex; align-items: center; justify-content: center; background: rgba(124,92,252,0.1); border: 1px dashed var(--accent); border-radius: 50%; width: 90px; height: 90px; font-size: 0.75rem; font-weight: 700; color: var(--accent); text-align: center; vertical-align: middle; margin: 0 10px; line-height: 1.2; }
+        .mcd-row { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 30px; }
+        .card-link { text-align: center; }
+        .card-link span { font-size: 0.7rem; color: var(--text-muted); display: block; margin-top: 4px; }
+    </style>
+</head>
+<body>
+
+<header class="tp-header">
+    <a href="../../" class="back">← Retour au portfolio</a>
+    <span class="breadcrumb">Projets Scolaires / <span>JMerise — MCD</span></span>
+</header>
+
+<div class="tp-wrapper" style="max-width: 1000px;">
+    <div class="tp-title">
+        <div class="tag">JMerise · 2025</div>
+        <h1>MCD — Gestion de Grades Militaires</h1>
+        <p>Modélisation conceptuelle d'une base de données de gestion de personnels militaires avec Merise. Entités, associations, cardinalités et génération SQL.</p>
+    </div>
+
+    <div class="card">
+        <h2>Modèle Conceptuel de Données (MCD)</h2>
+        <div class="mcd-container">
+
+            <!-- Entités ligne 1 -->
+            <div class="mcd-row">
+                <div>
+                    <div class="mcd-entity">
+                        <div class="entity-name">GRADE</div>
+                        <div class="entity-body">
+                            <div class="attr pk"># id_grade (PK)</div>
+                            <div class="attr">libelle_grade</div>
+                            <div class="attr">niveau_hierarchique</div>
+                            <div class="attr">code_grade</div>
+                        </div>
+                    </div>
+                    <div class="card-link"><span style="color:var(--accent)">1,1 — 0,N</span></div>
+                </div>
+
+                <div class="mcd-assoc">POSSÈDE</div>
+
+                <div>
+                    <div class="mcd-entity">
+                        <div class="entity-name">MILITAIRE</div>
+                        <div class="entity-body">
+                            <div class="attr pk"># matricule (PK)</div>
+                            <div class="attr">nom</div>
+                            <div class="attr">prenom</div>
+                            <div class="attr">date_naissance</div>
+                            <div class="attr">date_engagement</div>
+                            <div class="attr fk">id_grade (FK)</div>
+                            <div class="attr fk">id_unite (FK)</div>
+                        </div>
+                    </div>
+                    <div class="card-link"><span style="color:var(--accent2)">0,N — 1,1</span></div>
+                </div>
+
+                <div class="mcd-assoc">AFFECTÉ À</div>
+
+                <div>
+                    <div class="mcd-entity">
+                        <div class="entity-name">UNITÉ</div>
+                        <div class="entity-body">
+                            <div class="attr pk"># id_unite (PK)</div>
+                            <div class="attr">nom_unite</div>
+                            <div class="attr">type_unite</div>
+                            <div class="attr">lieu</div>
+                            <div class="attr fk">id_base (FK)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Entités ligne 2 -->
+            <div class="mcd-row" style="margin-top:10px">
+                <div>
+                    <div class="mcd-entity" style="border-color:var(--accent2)">
+                        <div class="entity-name" style="background:var(--accent2)">MISSION</div>
+                        <div class="entity-body">
+                            <div class="attr pk"># id_mission (PK)</div>
+                            <div class="attr">code_mission</div>
+                            <div class="attr">intitule</div>
+                            <div class="attr">date_debut</div>
+                            <div class="attr">date_fin</div>
+                            <div class="attr">statut</div>
+                        </div>
+                    </div>
+                    <div class="card-link"><span style="color:var(--accent2)">0,N — 0,N</span></div>
+                </div>
+
+                <div class="mcd-assoc" style="border-color:var(--accent2); color:var(--accent2); background:rgba(59,130,246,0.1)">PARTICIPE À</div>
+
+                <div style="margin-top: 0">
+                    <div class="mcd-entity" style="border-color:var(--accent-green)">
+                        <div class="entity-name" style="background:var(--accent-green)">BASE</div>
+                        <div class="entity-body">
+                            <div class="attr pk"># id_base (PK)</div>
+                            <div class="attr">nom_base</div>
+                            <div class="attr">region</div>
+                            <div class="attr">pays</div>
+                            <div class="attr">capacite</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Dictionnaire de données</h2>
+        <table>
+            <thead><tr><th>Entité</th><th>Attribut</th><th>Type</th><th>Contrainte</th></tr></thead>
+            <tbody>
+                <tr><td>GRADE</td><td>id_grade</td><td>INT</td><td>PK, AUTO_INCREMENT</td></tr>
+                <tr><td>GRADE</td><td>libelle_grade</td><td>VARCHAR(50)</td><td>NOT NULL</td></tr>
+                <tr><td>MILITAIRE</td><td>matricule</td><td>VARCHAR(10)</td><td>PK</td></tr>
+                <tr><td>MILITAIRE</td><td>nom</td><td>VARCHAR(80)</td><td>NOT NULL</td></tr>
+                <tr><td>MILITAIRE</td><td>id_grade</td><td>INT</td><td>FK → GRADE</td></tr>
+                <tr><td>MISSION</td><td>statut</td><td>ENUM</td><td>'planifiée','active','terminée'</td></tr>
+                <tr><td>BASE</td><td>capacite</td><td>INT</td><td>DEFAULT 0</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <h2>Extrait SQL généré</h2>
+        <div class="result-box" style="font-size:0.8rem; line-height:1.7">CREATE TABLE GRADE (
+    id_grade INT PRIMARY KEY AUTO_INCREMENT,
+    libelle_grade VARCHAR(50) NOT NULL,
+    niveau_hierarchique INT,
+    code_grade VARCHAR(10) UNIQUE
+);
+
+CREATE TABLE MILITAIRE (
+    matricule VARCHAR(10) PRIMARY KEY,
+    nom VARCHAR(80) NOT NULL,
+    prenom VARCHAR(80) NOT NULL,
+    date_naissance DATE,
+    date_engagement DATE NOT NULL,
+    id_grade INT,
+    id_unite INT,
+    FOREIGN KEY (id_grade) REFERENCES GRADE(id_grade),
+    FOREIGN KEY (id_unite) REFERENCES UNITE(id_unite)
+);
+
+CREATE TABLE PARTICIPE (
+    matricule VARCHAR(10),
+    id_mission INT,
+    role_mission VARCHAR(100),
+    PRIMARY KEY (matricule, id_mission),
+    FOREIGN KEY (matricule) REFERENCES MILITAIRE(matricule),
+    FOREIGN KEY (id_mission) REFERENCES MISSION(id_mission)
+);</div>
+    </div>
+
+    <div class="card">
+        <h2>Technologies utilisées</h2>
+        <span class="tech-tag">Merise</span>
+        <span class="tech-tag">SQL</span>
+        <span class="tech-tag">MCD / MLD</span>
+        <span class="tech-tag">Modélisation BDD</span>
+        <span class="tech-tag">HTML/CSS</span>
+    </div>
+</div>
+
+</body>
+</html>

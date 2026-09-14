@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP10 — JS Avancé | Portfolio BTS SIO</title>
+    <link rel="stylesheet" href="./tp-style.css">
+</head>
+<body>
+
+<header class="tp-header">
+    <a href="../../" class="back">← Retour au portfolio</a>
+    <span class="breadcrumb">Projets Scolaires / <span>TP10 — JS Avancé</span></span>
+</header>
+
+<div class="tp-wrapper">
+    <div class="tp-title">
+        <div class="tag">TP10 · 2024</div>
+        <h1>Logique JavaScript avancée</h1>
+        <p>Conditions imbriquées, boucles, comparaisons et génération aléatoire — évolution par rapport au TP9.</p>
+    </div>
+
+    <div class="card">
+        <h2>Exercices avancés</h2>
+        <div class="feature-grid">
+            <div class="feature-card" onclick="calcul_moyenne()">
+                <div class="icon">🧮</div>
+                <h3>Moyenne pondérée</h3>
+                <p>Calcul avec mention : Passable, Bien, Très bien.</p>
+            </div>
+            <div class="feature-card" onclick="test_temperature()">
+                <div class="icon">🌡️</div>
+                <h3>Analyse de température</h3>
+                <p>Froid / Normal / Chaud selon seuils °C.</p>
+            </div>
+            <div class="feature-card" onclick="comparer_nombre()">
+                <div class="icon">↔️</div>
+                <h3>Comparaison de nombres</h3>
+                <p>Détermine le plus petit, le plus grand ou l'égalité.</p>
+            </div>
+            <div class="feature-card" onclick="nombre_aleatoire()">
+                <div class="icon">🎲</div>
+                <h3>Nombre aléatoire</h3>
+                <p>Génère un entier dans un intervalle donné.</p>
+            </div>
+        </div>
+        <div id="tp10-result" class="result-box empty mt-24">Le résultat s'affichera ici.</div>
+    </div>
+
+    <div class="card">
+        <h2>Technologies utilisées</h2>
+        <span class="tech-tag">HTML</span>
+        <span class="tech-tag">CSS</span>
+        <span class="tech-tag">JavaScript</span>
+        <span class="tech-tag">Conditions imbriquées</span>
+        <span class="tech-tag">Math.random()</span>
+    </div>
+</div>
+
+<script>
+function afficher(txt) {
+    var el = document.getElementById('tp10-result');
+    el.textContent = txt;
+    el.className = 'result-box';
+}
+
+function calcul_moyenne() {
+    var n1 = prompt('Première note sur 20 :');
+    if (n1 === null) return;
+    var n2 = prompt('Deuxième note sur 20 :');
+    if (n2 === null) return;
+    var n3 = prompt('Troisième note sur 20 :');
+    if (n3 === null) return;
+
+    var somme = Number(n1) + Number(n2) + Number(n3);
+    var moyenne = somme / 3;
+    var mention;
+
+    if (moyenne < 10) mention = 'Redoublant';
+    else if (moyenne < 12) mention = 'Admis — Passable';
+    else if (moyenne < 14) mention = 'Admis — Bien';
+    else mention = 'Admis — Très bien';
+
+    afficher('Notes : ' + n1 + ', ' + n2 + ', ' + n3 + '\nMoyenne : ' + moyenne.toFixed(2) + ' / 20\n→ ' + mention);
+}
+
+function test_temperature() {
+    var temp = prompt('Saisissez une température (en °C) :');
+    if (temp === null) return;
+    var t = Number(temp);
+    var etat;
+
+    if (t < 10) etat = 'Froid ❄️';
+    else if (t < 25) etat = 'Normal 🌤️';
+    else etat = 'Chaud ☀️';
+
+    afficher('Température : ' + temp + ' °C\n→ ' + etat);
+}
+
+function comparer_nombre() {
+    var n1 = prompt('Premier nombre :');
+    if (n1 === null) return;
+    var n2 = prompt('Deuxième nombre :');
+    if (n2 === null) return;
+
+    var a = Number(n1);
+    var b = Number(n2);
+    var res;
+
+    if (a < b) res = n1 + ' < ' + n2 + '\n→ ' + n1 + ' est le plus petit.';
+    else if (b < a) res = n1 + ' > ' + n2 + '\n→ ' + n2 + ' est le plus petit.';
+    else res = n1 + ' = ' + n2 + '\n→ Les deux nombres sont égaux.';
+
+    afficher('Comparaison : ' + res);
+}
+
+function nombre_aleatoire() {
+    var min = prompt('Valeur minimale :');
+    if (min === null) return;
+    var max = prompt('Valeur maximale :');
+    if (max === null) return;
+
+    var rand = Math.floor(Math.random() * (Number(max) - Number(min) + 1)) + Number(min);
+    afficher('Intervalle : [' + min + ' ; ' + max + ']\n→ Nombre généré : ' + rand);
+}
+</script>
+
+</body>
+</html>

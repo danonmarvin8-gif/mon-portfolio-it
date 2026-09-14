@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP3 — Métiers IT | Portfolio BTS SIO</title>
+    <link rel="stylesheet" href="./tp-style.css">
+    <style>
+        .tp3-layout { display: grid; grid-template-columns: 220px 1fr; min-height: calc(100vh - 58px); }
+        .tp3-sidebar { background: #141418; border-right: 1px solid rgba(255,255,255,0.08); padding: 20px 0; }
+        .tp3-sidebar a { display: block; padding: 12px 20px; color: #6b6b7a; text-decoration: none; font-size: 0.875rem; font-weight: 500; border-right: 2px solid transparent; transition: all 0.15s; }
+        .tp3-sidebar a:hover, .tp3-sidebar a.active { color: var(--accent); border-right-color: var(--accent); background: rgba(124,92,252,0.07); }
+        .tp3-sidebar .sidebar-title { padding: 8px 20px 16px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: #3a3a4a; font-weight: 600; }
+        .tp3-content { padding: 30px; }
+        .metier-card { background: var(--bg-card2); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 14px; }
+        .metier-card h3 { font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: 6px; }
+        .metier-card p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+        @media (max-width: 640px) { .tp3-layout { grid-template-columns: 1fr; } .tp3-sidebar { display: flex; overflow-x: auto; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); padding: 8px 0; } .tp3-sidebar a { white-space: nowrap; } }
+    </style>
+</head>
+<body>
+
+<header class="tp-header">
+    <a href="../../" class="back">← Retour au portfolio</a>
+    <span class="breadcrumb">Projets Scolaires / <span>TP3 — Métiers IT</span></span>
+</header>
+
+<div class="tp3-layout">
+    <!-- Sidebar navigation -->
+    <nav class="tp3-sidebar">
+        <div class="sidebar-title">Métiers IT</div>
+        <a href="#" class="active" onclick="showPage('accueil', this)">🏠 Accueil</a>
+        <a href="#" onclick="showPage('pentester', this)">🕵️ Pentester</a>
+        <a href="#" onclick="showPage('devsecops', this)">🔒 DevSecOps</a>
+        <a href="#" onclick="showPage('devweb', this)">💻 Dev Web</a>
+        <a href="#" onclick="showPage('adminreseau', this)">🌐 Admin Réseau</a>
+        <a href="#" onclick="showPage('cloud', this)">☁️ Cloud</a>
+    </nav>
+
+    <!-- Content -->
+    <div class="tp3-content">
+
+        <div id="page-accueil">
+            <div class="tp-title" style="margin-bottom:24px">
+                <div class="tag">TP3 · 2024</div>
+                <h1 style="font-size:1.6rem">Les métiers de l'IT</h1>
+                <p>Cliquez sur un métier dans le menu pour en découvrir la fiche complète.</p>
+            </div>
+            <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap:12px;">
+                <div class="metier-card" style="cursor:pointer" onclick="showPage('pentester', null)"><h3>🕵️ Pentester</h3><p>Test d'intrusion et sécurité offensive.</p></div>
+                <div class="metier-card" style="cursor:pointer" onclick="showPage('devsecops', null)"><h3>🔒 DevSecOps</h3><p>Sécurité intégrée dans le cycle de dev.</p></div>
+                <div class="metier-card" style="cursor:pointer" onclick="showPage('devweb', null)"><h3>💻 Dev Web</h3><p>Création de sites et applications web.</p></div>
+                <div class="metier-card" style="cursor:pointer" onclick="showPage('adminreseau', null)"><h3>🌐 Admin Réseau</h3><p>Gestion et maintenance des réseaux.</p></div>
+                <div class="metier-card" style="cursor:pointer" onclick="showPage('cloud', null)"><h3>☁️ Cloud</h3><p>Infrastructure Cloud et virtualisation.</p></div>
+            </div>
+        </div>
+
+        <div id="page-pentester" style="display:none">
+            <div class="tp-title" style="margin-bottom:20px"><div class="tag">Métier</div><h1 style="font-size:1.5rem">🕵️ Pentester</h1><p>Testeur d'intrusion / Ethical Hacker</p></div>
+            <div class="card"><h2>Description</h2><p style="color:var(--text-muted);font-size:0.9rem;line-height:1.7">Le pentester (ou testeur d'intrusion) simule des attaques informatiques sur les systèmes d'une organisation pour en identifier les failles avant que des hackers malveillants ne le fassent. Il rédige ensuite des rapports détaillés avec des recommandations de correction.</p></div>
+            <div class="card"><h2>Compétences requises</h2><div style="display:flex;flex-wrap:wrap;gap:8px"><span class="tech-tag">Kali Linux</span><span class="tech-tag">Metasploit</span><span class="tech-tag">Python</span><span class="tech-tag">Réseaux TCP/IP</span><span class="tech-tag">OWASP</span><span class="tech-tag">Scripting</span></div></div>
+            <div class="card"><h2>Salaire indicatif</h2><p style="color:var(--text-muted);font-size:0.9rem">Débutant : <strong style="color:var(--accent)">35 000 – 45 000 €/an</strong> · Senior : <strong style="color:var(--accent)">55 000 – 80 000 €/an</strong></p></div>
+        </div>
+
+        <div id="page-devsecops" style="display:none">
+            <div class="tp-title" style="margin-bottom:20px"><div class="tag">Métier</div><h1 style="font-size:1.5rem">🔒 DevSecOps</h1><p>Développeur Sécurité Opérations</p></div>
+            <div class="card"><h2>Description</h2><p style="color:var(--text-muted);font-size:0.9rem;line-height:1.7">Le DevSecOps intègre les pratiques de sécurité à toutes les étapes du développement logiciel (CI/CD). Il automatise les tests de sécurité, analyse les vulnérabilités du code et supervise les déploiements en production de manière sécurisée.</p></div>
+            <div class="card"><h2>Compétences requises</h2><div style="display:flex;flex-wrap:wrap;gap:8px"><span class="tech-tag">Docker</span><span class="tech-tag">Kubernetes</span><span class="tech-tag">Git CI/CD</span><span class="tech-tag">SAST/DAST</span><span class="tech-tag">Terraform</span><span class="tech-tag">Linux</span></div></div>
+            <div class="card"><h2>Salaire indicatif</h2><p style="color:var(--text-muted);font-size:0.9rem">Débutant : <strong style="color:var(--accent)">38 000 – 48 000 €/an</strong> · Senior : <strong style="color:var(--accent)">60 000 – 90 000 €/an</strong></p></div>
+        </div>
+
+        <div id="page-devweb" style="display:none">
+            <div class="tp-title" style="margin-bottom:20px"><div class="tag">Métier</div><h1 style="font-size:1.5rem">💻 Développeur Web</h1><p>Création d'applications et sites web</p></div>
+            <div class="card"><h2>Description</h2><p style="color:var(--text-muted);font-size:0.9rem;line-height:1.7">Le développeur web conçoit et code des sites web et applications web. Il travaille sur le front-end (interface visible) et/ou le back-end (serveur, base de données, API). Il collabore avec les designers et les chefs de projet pour livrer des produits fonctionnels et performants.</p></div>
+            <div class="card"><h2>Compétences requises</h2><div style="display:flex;flex-wrap:wrap;gap:8px"><span class="tech-tag">HTML/CSS</span><span class="tech-tag">JavaScript</span><span class="tech-tag">React / Vue</span><span class="tech-tag">PHP / Node.js</span><span class="tech-tag">SQL</span><span class="tech-tag">Git</span></div></div>
+            <div class="card"><h2>Salaire indicatif</h2><p style="color:var(--text-muted);font-size:0.9rem">Débutant : <strong style="color:var(--accent)">28 000 – 38 000 €/an</strong> · Senior : <strong style="color:var(--accent)">50 000 – 70 000 €/an</strong></p></div>
+        </div>
+
+        <div id="page-adminreseau" style="display:none">
+            <div class="tp-title" style="margin-bottom:20px"><div class="tag">Métier</div><h1 style="font-size:1.5rem">🌐 Admin Réseau</h1><p>Administrateur Systèmes & Réseaux</p></div>
+            <div class="card"><h2>Description</h2><p style="color:var(--text-muted);font-size:0.9rem;line-height:1.7">L'administrateur réseau gère et maintient l'infrastructure informatique d'une entreprise : routeurs, commutateurs, pare-feux, VLANs, VPNs. Il assure la disponibilité, la performance et la sécurité du réseau. Il intervient en cas de panne et planifie les évolutions.</p></div>
+            <div class="card"><h2>Compétences requises</h2><div style="display:flex;flex-wrap:wrap;gap:8px"><span class="tech-tag">Cisco IOS</span><span class="tech-tag">VLAN</span><span class="tech-tag">VPN</span><span class="tech-tag">Active Directory</span><span class="tech-tag">PowerShell</span><span class="tech-tag">Wireshark</span></div></div>
+            <div class="card"><h2>Salaire indicatif</h2><p style="color:var(--text-muted);font-size:0.9rem">Débutant : <strong style="color:var(--accent)">28 000 – 36 000 €/an</strong> · Senior : <strong style="color:var(--accent)">45 000 – 65 000 €/an</strong></p></div>
+        </div>
+
+        <div id="page-cloud" style="display:none">
+            <div class="tp-title" style="margin-bottom:20px"><div class="tag">Métier</div><h1 style="font-size:1.5rem">☁️ Ingénieur Cloud</h1><p>Infrastructure Cloud & Virtualisation</p></div>
+            <div class="card"><h2>Description</h2><p style="color:var(--text-muted);font-size:0.9rem;line-height:1.7">L'ingénieur cloud conçoit et gère des infrastructures hébergées sur des plateformes cloud (AWS, Azure, GCP). Il met en place la scalabilité automatique, la haute disponibilité et optimise les coûts. Il travaille avec des outils d'Infrastructure-as-Code pour automatiser les déploiements.</p></div>
+            <div class="card"><h2>Compétences requises</h2><div style="display:flex;flex-wrap:wrap;gap:8px"><span class="tech-tag">AWS / Azure</span><span class="tech-tag">Terraform</span><span class="tech-tag">Docker</span><span class="tech-tag">Kubernetes</span><span class="tech-tag">Python</span><span class="tech-tag">Linux</span></div></div>
+            <div class="card"><h2>Salaire indicatif</h2><p style="color:var(--text-muted);font-size:0.9rem">Débutant : <strong style="color:var(--accent)">40 000 – 50 000 €/an</strong> · Senior : <strong style="color:var(--accent)">65 000 – 95 000 €/an</strong></p></div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+function showPage(id, linkEl) {
+    var pages = document.querySelectorAll('[id^="page-"]');
+    pages.forEach(function(p) { p.style.display = 'none'; });
+    document.getElementById('page-' + id).style.display = 'block';
+
+    var links = document.querySelectorAll('.tp3-sidebar a');
+    links.forEach(function(l) { l.classList.remove('active'); });
+    if (linkEl) linkEl.classList.add('active');
+}
+</script>
+
+</body>
+</html>

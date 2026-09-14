@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP5 — Formulaire de contact | Portfolio BTS SIO</title>
+    <link rel="stylesheet" href="./tp-style.css">
+</head>
+<body>
+
+<header class="tp-header">
+    <a href="../../" class="back">← Retour au portfolio</a>
+    <span class="breadcrumb">Projets Scolaires / <span>TP5 — Formulaire de contact</span></span>
+</header>
+
+<div class="tp-wrapper">
+    <div class="tp-title">
+        <div class="tag">TP5 · 2024</div>
+        <h1>Formulaire de contact CSS</h1>
+        <p>Mise en forme et validation HTML5 : champs Nom, Email, Téléphone et Message avec styles CSS soignés.</p>
+    </div>
+
+    <div class="card">
+        <h2>Nous contacter</h2>
+
+        <div class="grid-2">
+            <div>
+                <label for="nom">Nom *</label>
+                <input type="text" id="nom" placeholder="Votre nom" required>
+            </div>
+            <div>
+                <label for="prenom">Prénom *</label>
+                <input type="text" id="prenom" placeholder="Votre prénom" required>
+            </div>
+        </div>
+
+        <label for="email">Adresse email *</label>
+        <input type="email" id="email" placeholder="exemple@email.com" required>
+
+        <label for="tel">Téléphone</label>
+        <input type="tel" id="tel" placeholder="06 XX XX XX XX">
+
+        <label for="sujet">Sujet</label>
+        <select id="sujet">
+            <option value="">— Sélectionnez un sujet —</option>
+            <option value="info">Demande d'information</option>
+            <option value="stage">Stage / Alternance</option>
+            <option value="projet">Proposition de projet</option>
+            <option value="autre">Autre</option>
+        </select>
+
+        <label for="message">Message *</label>
+        <textarea id="message" placeholder="Votre message ici..." rows="5" required></textarea>
+
+        <div class="btn-row">
+            <button class="btn" onclick="envoyerFormulaire()">Envoyer le message</button>
+            <button class="btn btn-outline" onclick="resetForm()">Réinitialiser</button>
+        </div>
+
+        <div id="form-alert" class="alert"></div>
+    </div>
+
+    <div class="card">
+        <h2>Technologies utilisées</h2>
+        <span class="tech-tag">HTML5</span>
+        <span class="tech-tag">CSS</span>
+        <span class="tech-tag">Validation native</span>
+        <span class="tech-tag">Formulaires</span>
+    </div>
+</div>
+
+<script>
+function envoyerFormulaire() {
+    var nom = document.getElementById('nom').value.trim();
+    var prenom = document.getElementById('prenom').value.trim();
+    var email = document.getElementById('email').value.trim();
+    var message = document.getElementById('message').value.trim();
+    var alert_el = document.getElementById('form-alert');
+
+    if (!nom || !prenom || !email || !message) {
+        alert_el.textContent = 'Merci de remplir tous les champs obligatoires (*).';
+        alert_el.className = 'alert show error';
+        return;
+    }
+
+    // vérification email basique
+    if (email.indexOf('@') === -1 || email.indexOf('.') === -1) {
+        alert_el.textContent = 'L\'adresse email ne semble pas valide.';
+        alert_el.className = 'alert show error';
+        return;
+    }
+
+    alert_el.textContent = '✓ Message envoyé ! (simulation — aucune donnée n\'est réellement transmise)';
+    alert_el.className = 'alert show success';
+}
+
+function resetForm() {
+    document.getElementById('nom').value = '';
+    document.getElementById('prenom').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('tel').value = '';
+    document.getElementById('sujet').value = '';
+    document.getElementById('message').value = '';
+    document.getElementById('form-alert').className = 'alert';
+}
+</script>
+
+</body>
+</html>
