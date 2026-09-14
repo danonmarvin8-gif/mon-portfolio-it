@@ -244,9 +244,6 @@ export function HeroHeader() {
               <span className="font-semibold" style={{ color: '#60a5fa' }}>réseaux, la cybersécurité</span>
               {' '}et le développement web.
             </p>
-            <p className="mt-3 text-base text-white/65 font-light">
-              Développeur & Sysadmin Junior · Bac Pro Commerce
-            </p>
           </motion.div>
         </TiltCard>
 

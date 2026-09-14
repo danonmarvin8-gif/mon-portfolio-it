@@ -1,141 +1,154 @@
 'use client'
 
-import { motion, useMotionValue, useSpring } from 'framer-motion'
-import { useEffect, useRef } from 'react'
+import { motion } from 'framer-motion'
 import { useAccessibility } from '@/components/core/AccessibilityProvider'
 import type { ProjectData } from '@/lib/sessions'
 
 interface ProjectCardProps {
   project: ProjectData
+  priority?: boolean
 }
 
-function TechTag({ label, color }: { label: string; color: string }) {
-  return (
-    <span
-      className="inline-flex items-center text-xs font-medium px-3 py-1 rounded-pill"
-      style={{
-        background: `${color}18`,
-        color: color,
-        border: `1px solid ${color}33`,
-      }}
-    >
-      {label}
-    </span>
-  )
-}
-
-export function ProjectCard({ project }: ProjectCardProps) {
+export function ProjectCard({ project, priority = false }: ProjectCardProps) {
   const { reducedMotion } = useAccessibility()
-  const cardRef = useRef<HTMLDivElement>(null)
-  const rotateX = useMotionValue(0)
-  const rotateY = useMotionValue(0)
-  const springX = useSpring(rotateX, { stiffness: 200, damping: 26 })
-  const springY = useSpring(rotateY, { stiffness: 200, damping: 26 })
 
-  useEffect(() => {
-    if (reducedMotion) return
-    const card = cardRef.current
-    if (!card) return
-
-    const onMove = (e: MouseEvent) => {
-      const rect = card.getBoundingClientRect()
-      const cx = rect.left + rect.width / 2
-      const cy = rect.top + rect.height / 2
-      rotateX.set(((e.clientY - cy) / rect.height) * -10)
-      rotateY.set(((e.clientX - cx) / rect.width) * 10)
-    }
-    const onLeave = () => { rotateX.set(0); rotateY.set(0) }
-
-    card.addEventListener('mousemove', onMove)
-    card.addEventListener('mouseleave', onLeave)
-    return () => {
-      card.removeEventListener('mousemove', onMove)
-      card.removeEventListener('mouseleave', onLeave)
-    }
-  }, [reducedMotion, rotateX, rotateY])
-
-  return (
+  const cardContent = (
     <motion.article
-      ref={cardRef}
       aria-labelledby={`project-title-${project.id}`}
-      initial={reducedMotion ? {} : { opacity: 0, y: 50 }}
+      initial={reducedMotion ? {} : { opacity: 0, y: 30 }}
       whileInView={reducedMotion ? {} : { opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
+      viewport={{ once: true, margin: '-40px' }}
       transition={{
-        delay: project.index * 0.1,
-        type: 'spring',
-        stiffness: 140,
-        damping: 20,
+        delay: priority ? 0 : project.index * 0.06,
+        duration: 0.5,
+        ease: [0.4, 0, 0.2, 1],
       }}
-      whileHover={reducedMotion ? {} : { y: -10, transition: { type: 'spring', stiffness: 300, damping: 22 } }}
-      style={{
-        rotateX: reducedMotion ? 0 : springX,
-        rotateY: reducedMotion ? 0 : springY,
-        transformStyle: 'preserve-3d',
-        willChange: 'transform, opacity',
-      }}
-      className={`glass ${project.glowClass} rounded-card p-6 sm:p-8 relative overflow-hidden group cursor-default h-full flex flex-col`}
+      whileHover={reducedMotion ? {} : { y: -6, transition: { duration: 0.2 } }}
+      className={`
+        glass ${project.glowClass} rounded-2xl p-6 relative overflow-hidden
+        flex flex-col gap-4 h-full
+        ${project.liveUrl || project.codeUrl ? 'cursor-pointer group' : 'cursor-default'}
+      `}
     >
+      {/* Hover shimmer */}
+      {(project.liveUrl || project.codeUrl) && (
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+          style={{ background: `linear-gradient(135deg, ${project.accent}18 0%, transparent 70%)` }}
+        />
+      )}
+
       {/* Bottom glow */}
       <div
         aria-hidden="true"
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-1/3 rounded-full opacity-25 blur-3xl pointer-events-none transition-opacity duration-500 group-hover:opacity-45"
+        className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-1/2 h-16 rounded-full blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-300"
         style={{ background: project.accent }}
       />
 
-      {/* Shimmer on hover */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 rounded-card opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-        style={{ background: `linear-gradient(135deg, ${project.accent}15 0%, transparent 60%)` }}
-      />
-
-      {/* Year badge */}
-      <div
-        aria-hidden="true"
-        className="absolute top-5 right-5 text-xs font-bold tracking-widest"
-        style={{ color: `${project.accent}70` }}
-      >
-        {project.year}
+      {/* Header row */}
+      <div className="flex items-start justify-between gap-2 relative z-10">
+        <div
+          className="w-11 h-11 rounded-xl flex items-center justify-center text-lg flex-shrink-0"
+          style={{ background: `${project.accent}22`, border: `1px solid ${project.accent}44` }}
+          aria-hidden="true"
+        >
+          {project.icon}
+        </div>
+        <span
+          className="text-xs font-bold tracking-widest mt-1 flex-shrink-0"
+          style={{ color: `${project.accent}80` }}
+        >
+          {project.year}
+        </span>
       </div>
 
-      {/* Icon */}
-      <motion.div
-        className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5 text-xl flex-shrink-0"
-        style={{ background: `${project.accent}20`, border: `1px solid ${project.accent}40` }}
-        whileHover={reducedMotion ? {} : { rotate: [0, -8, 8, 0], transition: { duration: 0.4 } }}
-        aria-hidden="true"
-      >
-        {project.icon}
-      </motion.div>
-
       {/* Content */}
-      <div className="relative z-10 flex flex-col flex-1">
-        <h3
-          id={`project-title-${project.id}`}
-          className="text-lg sm:text-xl font-bold text-white leading-tight mb-1"
-        >
-          {project.title}
-        </h3>
+      <div className="relative z-10 flex flex-col flex-1 gap-3">
+        <div>
+          <h3
+            id={`project-title-${project.id}`}
+            className="text-base font-bold text-white leading-snug"
+          >
+            {project.title}
+          </h3>
+          <p className="text-xs font-semibold mt-0.5 uppercase tracking-wide" style={{ color: project.accent }}>
+            {project.subtitle}
+          </p>
+        </div>
 
-        <p className="text-xs font-semibold mb-4 uppercase tracking-wide" style={{ color: project.accent }}>
-          {project.subtitle}
-        </p>
-
-        <p className="text-sm text-white/55 leading-relaxed mb-5 flex-1">
+        <p className="text-sm text-white/50 leading-relaxed flex-1">
           {project.description}
         </p>
 
         {/* Tech tags */}
-        <div className="flex flex-wrap gap-2 mt-auto" role="list" aria-label="Technologies utilisées">
-          {project.tech.map(t => (
-            <div role="listitem" key={t}>
-              <TechTag label={t} color={project.accent} />
-            </div>
+        <div className="flex flex-wrap gap-1.5 mt-auto" role="list" aria-label="Technologies">
+          {project.tech.slice(0, 4).map(t => (
+            <span
+              key={t}
+              role="listitem"
+              className="text-xs px-2 py-0.5 rounded-full font-medium"
+              style={{ background: `${project.accent}18`, color: project.accent, border: `1px solid ${project.accent}33` }}
+            >
+              {t}
+            </span>
           ))}
+          {project.tech.length > 4 && (
+            <span className="text-xs px-2 py-0.5 rounded-full text-white/30" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              +{project.tech.length - 4}
+            </span>
+          )}
         </div>
+
+        {/* CTA link */}
+        {(project.liveUrl || project.codeUrl) && (
+          <div className="flex gap-3 mt-2">
+            {project.liveUrl && (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-xs font-semibold transition-all"
+                style={{ color: project.accent }}
+                onClick={e => e.stopPropagation()}
+                aria-label={`Voir la démo de ${project.title}`}
+              >
+                <span aria-hidden="true">↗</span> Voir la démo
+              </a>
+            )}
+            {project.codeUrl && (
+              <a
+                href={project.codeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-xs font-semibold text-white/40 hover:text-white/70 transition-all"
+                onClick={e => e.stopPropagation()}
+                aria-label={`Voir le code de ${project.title}`}
+              >
+                <span aria-hidden="true">⌥</span> Code
+              </a>
+            )}
+          </div>
+        )}
       </div>
     </motion.article>
   )
-}
 
+  // Wrap in anchor if has liveUrl for full-card click
+  if (project.liveUrl) {
+    return (
+      <a
+        href={project.liveUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 rounded-2xl"
+        aria-label={`Ouvrir le projet ${project.title}`}
+        tabIndex={0}
+      >
+        {cardContent}
+      </a>
+    )
+  }
+
+  return cardContent
+}
