@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { useAccessibility } from '@/components/core/AccessibilityProvider'
-import type { ProjectData } from '@/lib/sessions'
+import { resolveProjectUrl, type ProjectData } from '@/lib/sessions'
 
 interface ProjectCardProps {
   project: ProjectData
@@ -11,27 +11,51 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project, priority = false }: ProjectCardProps) {
   const { reducedMotion } = useAccessibility()
+  const liveUrl = resolveProjectUrl(project.liveUrl)
+  const codeUrl = resolveProjectUrl(project.codeUrl)
 
-  const cardContent = (
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Si l'utilisateur clique directement sur un lien spécifique, ne pas intercepter
+    const target = e.target as HTMLElement
+    if (target.closest('a') || target.closest('button')) return
+
+    if (liveUrl) {
+      window.open(liveUrl, '_blank', 'noopener,noreferrer')
+    } else if (codeUrl) {
+      window.open(codeUrl, '_blank', 'noopener,noreferrer')
+    }
+  }
+
+  return (
     <motion.article
       aria-labelledby={`project-title-${project.id}`}
+      onClick={handleCardClick}
+      role={liveUrl || codeUrl ? 'link' : undefined}
+      tabIndex={liveUrl || codeUrl ? 0 : undefined}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          if (liveUrl) window.open(liveUrl, '_blank', 'noopener,noreferrer')
+          else if (codeUrl) window.open(codeUrl, '_blank', 'noopener,noreferrer')
+        }
+      }}
       initial={reducedMotion ? {} : { opacity: 0, y: 30 }}
       whileInView={reducedMotion ? {} : { opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-40px' }}
       transition={{
-        delay: priority ? 0 : project.index * 0.06,
-        duration: 0.5,
+        delay: priority ? 0 : project.index * 0.05,
+        duration: 0.4,
         ease: [0.4, 0, 0.2, 1],
       }}
       whileHover={reducedMotion ? {} : { y: -6, transition: { duration: 0.2 } }}
       className={`
         glass ${project.glowClass} rounded-2xl p-6 relative overflow-hidden
-        flex flex-col gap-4 h-full
-        ${project.liveUrl || project.codeUrl ? 'cursor-pointer group' : 'cursor-default'}
+        flex flex-col gap-4 h-full select-none
+        ${liveUrl || codeUrl ? 'cursor-pointer group' : 'cursor-default'}
       `}
     >
       {/* Hover shimmer */}
-      {(project.liveUrl || project.codeUrl) && (
+      {(liveUrl || codeUrl) && (
         <div
           aria-hidden="true"
           className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
@@ -68,7 +92,7 @@ export function ProjectCard({ project, priority = false }: ProjectCardProps) {
         <div>
           <h3
             id={`project-title-${project.id}`}
-            className="text-base font-bold text-white leading-snug"
+            className="text-base font-bold text-white leading-snug group-hover:text-white transition-colors"
           >
             {project.title}
           </h3>
@@ -100,29 +124,29 @@ export function ProjectCard({ project, priority = false }: ProjectCardProps) {
           )}
         </div>
 
-        {/* CTA link */}
-        {(project.liveUrl || project.codeUrl) && (
-          <div className="flex gap-3 mt-2">
-            {project.liveUrl && (
+        {/* Action buttons (Pas de liens imbriqués dans d'autres liens) */}
+        {(liveUrl || codeUrl) && (
+          <div className="flex items-center gap-3 mt-2 pt-2 border-t border-white/5">
+            {liveUrl && (
               <a
-                href={project.liveUrl}
+                href={liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-xs font-semibold transition-all"
-                style={{ color: project.accent }}
-                onClick={e => e.stopPropagation()}
+                className="inline-flex items-center gap-1 text-xs font-semibold py-1 px-2.5 rounded-lg transition-all hover:brightness-125"
+                style={{ background: `${project.accent}22`, color: project.accent, border: `1px solid ${project.accent}44` }}
+                onClick={(e) => e.stopPropagation()}
                 aria-label={`Voir la démo de ${project.title}`}
               >
-                <span aria-hidden="true">↗</span> Voir la démo
+                <span aria-hidden="true">↗</span> Démo
               </a>
             )}
-            {project.codeUrl && (
+            {codeUrl && (
               <a
-                href={project.codeUrl}
+                href={codeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-xs font-semibold text-white/40 hover:text-white/70 transition-all"
-                onClick={e => e.stopPropagation()}
+                className="inline-flex items-center gap-1 text-xs font-semibold py-1 px-2.5 rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-all border border-white/10"
+                onClick={(e) => e.stopPropagation()}
                 aria-label={`Voir le code de ${project.title}`}
               >
                 <span aria-hidden="true">⌥</span> Code
@@ -133,22 +157,4 @@ export function ProjectCard({ project, priority = false }: ProjectCardProps) {
       </div>
     </motion.article>
   )
-
-  // Wrap in anchor if has liveUrl for full-card click
-  if (project.liveUrl) {
-    return (
-      <a
-        href={project.liveUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 rounded-2xl"
-        aria-label={`Ouvrir le projet ${project.title}`}
-        tabIndex={0}
-      >
-        {cardContent}
-      </a>
-    )
-  }
-
-  return cardContent
 }

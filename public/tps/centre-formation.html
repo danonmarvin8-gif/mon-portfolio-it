@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centre de Formation SQL & PHP | Portfolio BTS SIO</title>
+    <link rel="stylesheet" href="./tp-style.css">
+</head>
+<body>
+
+<header class="tp-header">
+    <a href="../" class="back">← Retour au portfolio</a>
+    <span class="breadcrumb">Projets Scolaires / <span>Plateforme Centre de Formation (PHP/MySQL)</span></span>
+</header>
+
+<div class="tp-wrapper" style="max-width: 960px;">
+    <div class="tp-title">
+        <div class="tag">Projet PHP/SQL · 2025</div>
+        <h1>Plateforme Centre de Formation — Multi-Rôles</h1>
+        <p>Application de gestion académique avec authentification, contrôle d'accès basé sur les rôles (RBAC : Admin, Enseignant, Étudiant) et suivi des notes.</p>
+    </div>
+
+    <!-- Interface Démo interactive avec sélecteur de rôle -->
+    <div class="card">
+        <h2>Simulateur d'Espace Multi-Rôles</h2>
+        <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:16px;">Sélectionnez un rôle pour voir le tableau de bord correspondant :</p>
+        
+        <div class="btn-row" style="margin-bottom:20px;">
+            <button class="btn" id="btn-admin" onclick="changerRole('admin')">👑 Espace Administrateur</button>
+            <button class="btn btn-secondary" id="btn-enseignant" onclick="changerRole('enseignant')">👨‍🏫 Espace Enseignant</button>
+            <button class="btn btn-secondary" id="btn-etudiant" onclick="changerRole('etudiant')">🎓 Espace Étudiant</button>
+        </div>
+
+        <!-- Vue Admin -->
+        <div id="vue-admin">
+            <div style="background:rgba(124,92,252,0.08); border:1px solid rgba(124,92,252,0.25); border-radius:8px; padding:16px; margin-bottom:16px;">
+                <h3 style="color:var(--accent); font-size:1rem; margin-bottom:6px;">Vue Administrateur (Accès Total)</h3>
+                <p style="color:var(--text-muted); font-size:0.85rem;">Gestion globale des utilisateurs, affectation des enseignants aux cours et audit de la base de données.</p>
+            </div>
+            <table>
+                <thead>
+                    <tr><th>Matricule</th><th>Nom</th><th>Rôle</th><th>Actions</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>USR-01</td><td>M. Bernard</td><td>Administrateur</td><td><span class="tech-tag">Modifier</span></td></tr>
+                    <tr><td>ENS-04</td><td>Dr. Moreau (Réseaux)</td><td>Enseignant</td><td><span class="tech-tag">Affecter cours</span></td></tr>
+                    <tr><td>ETU-18</td><td>Danon Marvin (BTS SIO 2)</td><td>Étudiant</td><td><span class="tech-tag">Voir dossier</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Vue Enseignant -->
+        <div id="vue-enseignant" style="display:none;">
+            <div style="background:rgba(59,130,246,0.08); border:1px solid rgba(59,130,246,0.25); border-radius:8px; padding:16px; margin-bottom:16px;">
+                <h3 style="color:var(--accent2); font-size:1rem; margin-bottom:6px;">Vue Enseignant (Saisie des notes)</h3>
+                <p style="color:var(--text-muted); font-size:0.85rem;">Module : <strong>Administration Systèmes & Réseaux</strong> · Promo : BTS SIO 1ère année</p>
+            </div>
+            <table>
+                <thead>
+                    <tr><th>Étudiant</th><th>Note CC1 /20</th><th>Note TP /20</th><th>Moyenne</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Lucas Petit</td><td>14.5</td><td>16.0</td><td>15.25</td></tr>
+                    <tr><td>Emma Durand</td><td>17.0</td><td>18.5</td><td>17.75</td></tr>
+                    <tr><td>Thomas Leroy</td><td>11.0</td><td>13.5</td><td>12.25</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Vue Étudiant -->
+        <div id="vue-etudiant" style="display:none;">
+            <div style="background:rgba(34,197,94,0.08); border:1px solid rgba(34,197,94,0.25); border-radius:8px; padding:16px; margin-bottom:16px;">
+                <h3 style="color:var(--accent-green); font-size:1rem; margin-bottom:6px;">Vue Étudiant (Relevé individuel)</h3>
+                <p style="color:var(--text-muted); font-size:0.85rem;">Connecté en tant que : <strong>Danon Marvin (Option SISR)</strong></p>
+            </div>
+            <table>
+                <thead>
+                    <tr><th>Matière</th><th>Coefficient</th><th>Note finale</th><th>Appréciation</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Support & Services Réseau (SISR)</td><td>4</td><td>16.5 / 20</td><td>Très bon investissement pratique</td></tr>
+                    <tr><td>Cybersécurité des services</td><td>3</td><td>15.0 / 20</td><td>Bonne maîtrise des protocoles</td></tr>
+                    <tr><td>Développement Web & SQL</td><td>3</td><td>16.0 / 20</td><td>Scripts et requêtes soignés</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Sécurité & Architecture -->
+    <div class="card">
+        <h2>Sécurité & Architecture Technique</h2>
+        <ul style="list-style-type:none; padding-left:0; font-size:0.9rem; color:var(--text-muted); line-height:2;">
+            <li>🔒 <strong>Sessions PHP sécurisées :</strong> Utilisation de <code>session_regenerate_id(true)</code> et drapeaux <code>httponly</code>.</li>
+            <li>🔑 <strong>Hachage des mots de passe :</strong> Utilisation de l'algorithme <code>PASSWORD_BCRYPT</code> natif.</li>
+            <li>🛡️ <strong>Prévention contre les injections SQL :</strong> Toutes les requêtes sont préparées via <code>PDO::prepare()</code>.</li>
+            <li>👥 <strong>Contrôle d'accès (RBAC) :</strong> Vérification de la variable <code>$_SESSION['role']</code> au chargement de chaque page.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>Technologies BTS SIO</h2>
+        <span class="tech-tag">PHP 8</span>
+        <span class="tech-tag">MySQL</span>
+        <span class="tech-tag">Sécurité RBAC</span>
+        <span class="tech-tag">Sessions</span>
+        <span class="tech-tag">Architecture MVC</span>
+    </div>
+</div>
+
+<script>
+function changerRole(role) {
+    document.getElementById('vue-admin').style.display = role === 'admin' ? 'block' : 'none';
+    document.getElementById('vue-enseignant').style.display = role === 'enseignant' ? 'block' : 'none';
+    document.getElementById('vue-etudiant').style.display = role === 'etudiant' ? 'block' : 'none';
+
+    document.getElementById('btn-admin').className = role === 'admin' ? 'btn' : 'btn btn-secondary';
+    document.getElementById('btn-enseignant').className = role === 'enseignant' ? 'btn' : 'btn btn-secondary';
+    document.getElementById('btn-etudiant').className = role === 'etudiant' ? 'btn' : 'btn btn-secondary';
+}
+</script>
+
+</body>
+</html>

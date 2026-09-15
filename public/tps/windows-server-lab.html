@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Infrastructure Windows Server | Portfolio BTS SIO</title>
+    <link rel="stylesheet" href="./tp-style.css">
+</head>
+<body>
+
+<header class="tp-header">
+    <a href="../" class="back">← Retour au portfolio</a>
+    <span class="breadcrumb">Projets Scolaires / <span>Lab Windows Server (PowerShell / AD / DNS / DHCP)</span></span>
+</header>
+
+<div class="tp-wrapper" style="max-width: 960px;">
+    <div class="tp-title">
+        <div class="tag">Projet Infrastructure SISR · 2025</div>
+        <h1>Lab Réseau Windows Server Automatisé</h1>
+        <p>Déploiement complet d'une infrastructure d'entreprise virtualisée (3 serveurs) avec scripts d'automatisation PowerShell.</p>
+    </div>
+
+    <!-- Topologie Réseau -->
+    <div class="card">
+        <h2>Architecture Réseau (3 Nœuds)</h2>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:16px; margin-top:16px;">
+            <div class="feature-card" style="cursor:default;">
+                <div class="icon">🖥️</div>
+                <h3>SRV-A · Contrôleur Primaire</h3>
+                <p><strong>IP :</strong> 192.168.10.10 /24</p>
+                <p>Active Directory Domain Services (AD DS), DNS Primaire, Zone intégrée AD, GPO de sécurité des postes.</p>
+            </div>
+            <div class="feature-card" style="cursor:default;">
+                <div class="icon">🌐</div>
+                <h3>SRV-B · Routeur & DHCP</h3>
+                <p><strong>IP :</strong> 192.168.10.1 (LAN) / NAT (WAN)</p>
+                <p>Routage et Accès Distant (RRAS), NAT pour accès Internet des VM, Étendue DHCP avec basculement 80/20.</p>
+            </div>
+            <div class="feature-card" style="cursor:default;">
+                <div class="icon">🖧</div>
+                <h3>SRV-C · DC Secondaire & Fichiers</h3>
+                <p><strong>IP :</strong> 192.168.10.20 /24</p>
+                <p>Contrôleur de domaine répliqué, DHCP Failover (mode équilibrage de charge), Partage DFS et droits NTFS.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script PowerShell Extrait -->
+    <div class="card">
+        <h2>Extrait du Script d'Automatisation PowerShell (srv-b-router.ps1)</h2>
+        <div class="result-box" style="font-size:0.8rem; line-height:1.7;"># Automatisation de l'installation et configuration du routage NAT
+Write-Host "[+] Installation du rôle Accès à distance..." -ForegroundColor Cyan
+Install-WindowsFeature -Name Routing -IncludeManagementTools
+
+Write-Host "[+] Configuration du service de routage..." -ForegroundColor Cyan
+Install-RemoteAccess -VpnType RoutingOnly
+
+Write-Host "[+] Activation du routage NAT sur l'interface WAN..." -ForegroundColor Cyan
+netsh routing ip nat add interface "Ethernet-WAN" full
+netsh routing ip nat add interface "Ethernet-LAN" private
+
+Write-Host "[+] Configuration de l'étendue DHCP avec basculement..." -ForegroundColor Cyan
+Add-DhcpServerv4Scope -Name "Scope-Entreprise" -StartRange 192.168.10.50 -EndRange 192.168.10.200 -SubnetMask 255.255.255.0
+Set-DhcpServerv4OptionValue -DnsServer 192.168.10.10 -Router 192.168.10.1
+Add-DhcpServerv4Failover -Name "DHCP-Failover-Pair" -PartnerServer 192.168.10.20 -ScopeId 192.168.10.0 -Mode LoadBalance</div>
+    </div>
+
+    <!-- Compétences Validées -->
+    <div class="card">
+        <h2>Compétences Référentiel BTS SIO (Option SISR)</h2>
+        <table>
+            <thead><tr><th>Bloc de compétence</th><th>Activités réalisées</th></tr></thead>
+            <tbody>
+                <tr>
+                    <td><strong>Administration Systèmes</strong></td>
+                    <td>Création de l'arborescence Active Directory (OU, Groupes de sécurité, Utilisateurs, GPO mot de passe et restriction d'accès).</td>
+                </tr>
+                <tr>
+                    <td><strong>Services d'Infrastructure</strong></td>
+                    <td>Mise en place de la redondance DNS et haute disponibilité DHCP (mode Failover Load Balancing).</td>
+                </tr>
+                <tr>
+                    <td><strong>Automatisation & Scripting</strong></td>
+                    <td>Scripts PowerShell idempotents pour le provisionnement reproductible sans intervention manuelle.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <h2>Technologies</h2>
+        <span class="tech-tag">Windows Server 2022</span>
+        <span class="tech-tag">PowerShell</span>
+        <span class="tech-tag">Active Directory</span>
+        <span class="tech-tag">DNS</span>
+        <span class="tech-tag">DHCP Failover</span>
+        <span class="tech-tag">Hyper-V</span>
+    </div>
+</div>
+
+</body>
+</html>

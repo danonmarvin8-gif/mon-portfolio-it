@@ -16,8 +16,20 @@ export interface ProjectData {
   codeUrl?: string
 }
 
-// ─── Projets Scolaires ───────────────────────────────────────────────────────
-// Les TPs sont hébergés dans /public/tps/ — thème neutre pro, zéro Stranger Things.
+// ─── Helper de résolution d'URL ──────────────────────────────────────────────
+const isProd = process.env.NODE_ENV === 'production';
+export const basePath = isProd ? '/mon-portfolio-it' : '';
+
+export function resolveProjectUrl(url?: string): string {
+  if (!url) return '';
+  if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('#') || url.startsWith('mailto:')) {
+    return url;
+  }
+  const clean = url.startsWith('/') ? url : `/${url}`;
+  return `${basePath}${clean}`;
+}
+
+// ─── Projets Scolaires (15 projets complets avec démos réelles) ───────────────
 
 export const schoolProjects: ProjectData[] = [
   {
@@ -26,7 +38,7 @@ export const schoolProjects: ProjectData[] = [
     icon: '🛒',
     title: 'Boutique en ligne',
     subtitle: 'HTML/CSS/JS — Grille de produits & panier',
-    description: 'Premier TP de mise en page complexe. Une boutique avec une grille de produits CSS et un panier latéral fonctionnel en JS. Code basique mais ça marche.',
+    description: 'Premier TP de mise en page complexe. Une boutique avec une grille de produits CSS et un panier latéral fonctionnel en JS. Code basique mais fonctionnel.',
     tech: ['HTML', 'CSS', 'JavaScript', 'CSS Grid'],
     accent: '#7B61FF',
     glowClass: 'glow-violet',
@@ -82,7 +94,7 @@ export const schoolProjects: ProjectData[] = [
     icon: '🧮',
     title: 'Calculatrice JavaScript',
     subtitle: 'DOM + fonctions JS — Calculatrice fonctionnelle',
-    description: 'Calculatrice avec les 4 opérations, test de parité et permutation des valeurs. Premier vrai projet interactif JS — la logique de manipulation du DOM commence à faire sens.',
+    description: 'Calculatrice avec les 4 opérations arithmétiques, test de parité et permutation des valeurs. Premier vrai projet interactif JS avec manipulation du DOM.',
     tech: ['HTML', 'CSS', 'JavaScript'],
     accent: '#64D2FF',
     glowClass: 'glow-blue',
@@ -96,7 +108,7 @@ export const schoolProjects: ProjectData[] = [
     icon: '🏎️',
     title: 'Site Ferrari',
     subtitle: 'Bootstrap 5 — Mise en page responsive',
-    description: 'Site de présentation Ferrari avec navbar Bootstrap, grille responsive, galerie et section stats. Premier vrai usage d\'un framework CSS — ça m\'a montré la puissance des grilles.',
+    description: 'Site de présentation Ferrari avec navbar Bootstrap, grille responsive, galerie et section statistiques. Découverte et prise en main des frameworks CSS modernes.',
     tech: ['HTML', 'Bootstrap 5'],
     accent: '#FF375F',
     glowClass: 'glow-violet',
@@ -110,7 +122,7 @@ export const schoolProjects: ProjectData[] = [
     icon: '⚙️',
     title: 'Fonctions JS interactives',
     subtitle: 'Calcul moyenne, test âge, changement de fond',
-    description: 'Exercices JS variés : calcul de moyenne avec prompt, test majorité, affichage nom/prénom, changement de couleur de fond. Beaucoup de `document.write` et `prompt` — c\'est de l\'époque.',
+    description: 'Exercices JS variés : calcul de moyenne avec invites prompt, test de majorité, affichage nom/prénom, modification dynamique de la couleur de fond.',
     tech: ['HTML', 'CSS', 'JavaScript'],
     accent: '#30D158',
     glowClass: 'glow-green',
@@ -124,7 +136,7 @@ export const schoolProjects: ProjectData[] = [
     icon: '🔬',
     title: 'Logique JS avancée',
     subtitle: 'Conditions imbriquées, comparaisons, Math.random()',
-    description: 'Évolution du TP9 avec des cas plus complexes : mention scolaire, analyse de température, comparaison de deux nombres, générateur aléatoire. Les conditions s\'emboîtent mieux.',
+    description: 'Évolution avec des cas plus complexes : mentions scolaires, analyse de température, comparaison de deux nombres, générateur de nombres aléatoires.',
     tech: ['HTML', 'CSS', 'JavaScript'],
     accent: '#7B61FF',
     glowClass: 'glow-violet',
@@ -138,7 +150,7 @@ export const schoolProjects: ProjectData[] = [
     icon: '🧪',
     title: 'Calculatrice multi-fonctions',
     subtitle: 'Puissance, racine, PGCD — JS scientifique',
-    description: 'Calculatrice plus poussée avec opérations scientifiques : puissance, racine carrée, parité et PGCD. Code plus structuré qu\'au TP7 — on voit la progression.',
+    description: 'Calculatrice scientifique avec opérations avancées : puissances, racines carrées, parité et calcul de PGCD. Code plus modulaire et rigoureux.',
     tech: ['HTML', 'CSS', 'JavaScript'],
     accent: '#FF6B85',
     glowClass: 'glow-green',
@@ -152,7 +164,7 @@ export const schoolProjects: ProjectData[] = [
     icon: '📊',
     title: 'Analyseur de données',
     subtitle: 'Tableaux JS — tri, moyenne, parité',
-    description: 'Analyse dynamique d\'une liste de nombres : calcul de moyenne, min/max, tri croissant/décroissant et répartition pair/impair. Première vraie utilisation des tableaux JS.',
+    description: 'Analyse dynamique d\'une série de nombres : calcul de moyenne, min/max, tri croissant/décroissant et répartition pair/impair. Manipulation d\'arrays en JS.',
     tech: ['HTML', 'CSS', 'JavaScript', 'Array'],
     accent: '#FFB340',
     glowClass: 'glow-blue',
@@ -166,7 +178,7 @@ export const schoolProjects: ProjectData[] = [
     icon: '🧱',
     title: 'Dashboard Lab IT',
     subtitle: 'Bootstrap 5 — Interface admin responsive',
-    description: 'Interface d\'administration de laboratoire IT avec sidebar, tableau de serveurs, inventaire postes et stats réseau. Bootstrap mieux maîtrisé que le TP8 Ferrari.',
+    description: 'Interface d\'administration de laboratoire IT avec sidebar, inventaire des serveurs en ligne, postes clients et statistiques réseau en temps réel.',
     tech: ['HTML', 'CSS', 'Bootstrap 5'],
     accent: '#64D2FF',
     glowClass: 'glow-violet',
@@ -180,7 +192,7 @@ export const schoolProjects: ProjectData[] = [
     icon: '🗃️',
     title: 'MCD — Gestion Militaire',
     subtitle: 'Merise — Modélisation base de données',
-    description: 'Modélisation d\'une base de données de gestion de grades militaires : entités GRADE, MILITAIRE, UNITÉ, MISSION, BASE. Dictionnaire de données et SQL généré.',
+    description: 'Modélisation relationnelle d\'une base de données militaire : entités GRADE, MILITAIRE, UNITÉ, MISSION, BASE. Dictionnaire de données et script SQL généré.',
     tech: ['SQL', 'Merise', 'MCD', 'HTML'],
     accent: '#34D058',
     glowClass: 'glow-green',
@@ -194,12 +206,13 @@ export const schoolProjects: ProjectData[] = [
     icon: '🚌',
     title: 'Gestion de réservations',
     subtitle: 'PHP & MySQL — CRUD voitures / chauffeurs',
-    description: 'Application web pour gérer des réservations de cars touristiques. Menu de navigation, affichage depuis une base SQL, requêtes PHP. Premier vrai projet backend fonctionnel.',
-    tech: ['PHP', 'MySQL', 'HTML', 'CSS'],
+    description: 'Application web pour gérer des réservations de cars touristiques : assignation véhicule/chauffeur, gestion des disponibilités, requêtes préparées PDO.',
+    tech: ['PHP', 'MySQL', 'PDO', 'HTML', 'CSS'],
     accent: '#FF375F',
     glowClass: 'glow-green',
     category: 'school',
     year: '2025',
+    liveUrl: '/tps/php-reservations.html',
   },
   {
     id: 'centre-formation',
@@ -207,12 +220,13 @@ export const schoolProjects: ProjectData[] = [
     icon: '🎓',
     title: 'Plateforme de formation',
     subtitle: 'PHP/MySQL multi-rôles — Admin / Enseignant / Étudiant',
-    description: 'Système de gestion avec authentification et trois niveaux d\'accès. Gestion des modules, étudiants, enseignants. Architecture MVC partielle. Le projet le plus ambitieux du BTS.',
+    description: 'Système de gestion académique avec authentification, contrôle d\'accès basé sur les rôles (RBAC), gestion des cours, étudiants et relevés de notes.',
     tech: ['PHP', 'MySQL', 'CSS', 'Sessions', 'RBAC'],
     accent: '#64D2FF',
     glowClass: 'glow-blue',
     category: 'school',
     year: '2025',
+    liveUrl: '/tps/centre-formation.html',
   },
   {
     id: 'windows-server-lab',
@@ -220,17 +234,18 @@ export const schoolProjects: ProjectData[] = [
     icon: '🖧',
     title: 'Lab Windows Server',
     subtitle: 'Active Directory, DNS, DHCP Failover — PowerShell',
-    description: 'Déploiement automatisé d\'une infra réseau complète sur 3 serveurs Windows. Scripts PowerShell pour NAT, Active Directory, DHCP avec basculement et GPO de groupe.',
+    description: 'Déploiement automatisé d\'une infrastructure réseau d\'entreprise virtualisée sur 3 serveurs : routage NAT, Active Directory répliqué, DHCP en haute disponibilité.',
     tech: ['Windows Server', 'PowerShell', 'Active Directory', 'DNS', 'DHCP'],
     accent: '#30D158',
     glowClass: 'glow-green',
     category: 'school',
     year: '2025',
+    liveUrl: '/tps/windows-server-lab.html',
     codeUrl: 'https://github.com/danonmarvin8-gif/mon-portfolio-it',
   },
 ]
 
-// ─── Projets Personnels ───────────────────────────────────────────────────────
+// ─── Projets Personnels (100% fonctionnels et accessibles) ───────────────────
 
 export const personalProjects: ProjectData[] = [
   {
@@ -238,28 +253,29 @@ export const personalProjects: ProjectData[] = [
     index: 0,
     icon: '🌀',
     title: 'The Upside Down',
-    subtitle: 'Portfolio Stranger Things — HTML/CSS/JS vanilla',
-    description: 'Mon premier vrai portfolio perso. Ambiance Stranger Things complète avec effets sonores, portal animé CSS et galerie de projets. Zéro framework — code JS maison.',
+    subtitle: 'Portfolio Stranger Things — Expérience interactive',
+    description: 'Premier portfolio personnel complet : ambiance Stranger Things, effets sonores, portail animé CSS, missions d\'investigation et certifications.',
     tech: ['HTML', 'CSS', 'JavaScript', 'Web Audio API'],
     accent: '#FF375F',
     glowClass: 'glow-violet',
     category: 'personal',
     year: '2024',
-    liveUrl: 'https://danonmarvin8-gif.github.io/JobFlow-AI-Robot/',
+    liveUrl: '/projects/upside-down/index.html',
   },
   {
     id: 'disney-cast',
     index: 1,
     icon: '✨',
     title: 'Disney Cast Member',
-    subtitle: 'Portfolio candidature — Canvas, particules, vidéo',
-    description: 'Portfolio de candidature pour Disney avec intro vidéo plein écran, particules magiques Canvas et glassmorphism. Le projet où j\'ai vraiment progressé sur Canvas API.',
+    subtitle: 'Candidature interactive — Vidéo & Canvas',
+    description: 'Portfolio de candidature pour Disneyland Paris : cinématique vidéo plein écran, système de particules dorées sur Canvas et interface glassmorphism.',
     tech: ['HTML', 'CSS', 'JavaScript', 'Canvas API', 'Video API'],
     accent: '#FFD60A',
     glowClass: 'glow-blue',
     category: 'personal',
     year: '2025',
-    liveUrl: 'https://danonmarvin8-gif.github.io/JobFlow-AI-Robot/Portfolio%20Disney%20Cast%20Member%20Danon%20Marvin/',
+    liveUrl: 'https://danonmarvin8-gif.github.io/Portfolio-Disney-Cast-Member-Danon-Marvin/',
+    codeUrl: 'https://github.com/danonmarvin8-gif/Portfolio-Disney-Cast-Member-Danon-Marvin',
   },
   {
     id: 'dbz-portfolio',
@@ -267,26 +283,27 @@ export const personalProjects: ProjectData[] = [
     icon: '🐉',
     title: 'DBZ Portfolio',
     subtitle: 'Dragon Ball Z — Scouter HUD, aura Canvas',
-    description: 'Portfolio thème Dragon Ball Z avec scouter HUD dynamique, aura Canvas animée et fond vidéo combat. Chaque section a son propre "power level".',
+    description: 'Portfolio thème Dragon Ball Z avec affichage tête haute (HUD Scouter), aura de combat générée par Canvas et mini-arcade interactive.',
     tech: ['HTML', 'CSS', 'JavaScript', 'Canvas API'],
     accent: '#FF9F0A',
     glowClass: 'glow-green',
     category: 'personal',
     year: '2025',
-    liveUrl: 'https://danonmarvin8-gif.github.io/JobFlow-AI-Robot/Portfolio%20dbz/',
+    liveUrl: '/projects/dbz/index.html',
   },
   {
     id: 'omega-os',
     index: 3,
     icon: '🤖',
     title: 'OMEGA OS',
-    subtitle: 'Spatial Launcher — Electron, Three.js, MediaPipe',
-    description: 'Simulation d\'un OS spatial contrôlable à la main via la webcam. Hand tracking MediaPipe, rendu 3D Three.js, app desktop Electron. Le projet le plus technique que j\'aie fait.',
+    subtitle: 'Spatial Launcher — MediaPipe & Three.js',
+    description: 'Système d\'exploitation spatial contrôlable par les gestes de la main via webcam. Computer vision MediaPipe, scène 3D temps réel Three.js et Electron.',
     tech: ['Electron', 'Three.js', 'MediaPipe', 'JavaScript'],
     accent: '#7B61FF',
     glowClass: 'glow-violet',
     category: 'personal',
     year: '2025',
+    liveUrl: '/projects/omega-os.html',
     codeUrl: 'https://github.com/danonmarvin8-gif/mon-portfolio-it',
   },
 ]

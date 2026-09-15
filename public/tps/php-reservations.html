@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion de Réservations PHP & MySQL | Portfolio BTS SIO</title>
+    <link rel="stylesheet" href="./tp-style.css">
+</head>
+<body>
+
+<header class="tp-header">
+    <a href="../" class="back">← Retour au portfolio</a>
+    <span class="breadcrumb">Projets Scolaires / <span>Gestion de Réservations (PHP/MySQL)</span></span>
+</header>
+
+<div class="tp-wrapper" style="max-width: 960px;">
+    <div class="tp-title">
+        <div class="tag">Projet PHP · 2025</div>
+        <h1>Gestion de Réservations de Cars Touristiques</h1>
+        <p>Application web dynamique avec base de données MySQL : gestion des véhicules, chauffeurs, réservations et planning des trajets.</p>
+    </div>
+
+    <!-- Simulateur interactif -->
+    <div class="card">
+        <h2>Simulateur de Réservation en Ligne</h2>
+        <div class="grid-2">
+            <div>
+                <label>Nom du client / Groupe</label>
+                <input type="text" id="client" placeholder="ex: Groupe Scolaire Voltaire">
+            </div>
+            <div>
+                <label>Destination</label>
+                <select id="destination">
+                    <option value="Paris - Mont Saint-Michel">Paris → Mont Saint-Michel (360 km)</option>
+                    <option value="Lyon - Chamonix">Lyon → Chamonix Mont-Blanc (220 km)</option>
+                    <option value="Marseille - Nice">Marseille → Nice Côte d'Azur (200 km)</option>
+                    <option value="Bordeaux - Biarritz">Bordeaux → Biarritz (190 km)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div>
+                <label>Véhicule assigné</label>
+                <select id="vehicule">
+                    <option value="Mercedes Tourismo (55 places)">Mercedes Tourismo (55 places) · En service</option>
+                    <option value="Iveco Magelys (49 places)">Iveco Magelys (49 places) · En service</option>
+                    <option value="Setra S 516 HD (53 places)">Setra S 516 HD (53 places) · En service</option>
+                </select>
+            </div>
+            <div>
+                <label>Chauffeur disponible</label>
+                <select id="chauffeur">
+                    <option value="Jean Dupont">Jean Dupont (Permis D · FIMO OK)</option>
+                    <option value="Karim Belkacem">Karim Belkacem (Permis D · FIMO OK)</option>
+                    <option value="Sophie Martin">Sophie Martin (Permis D · FIMO OK)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="btn-row">
+            <button class="btn" onclick="ajouterReservation()">+ Valider la réservation</button>
+            <button class="btn btn-outline" onclick="reinitialiser()">Réinitialiser</button>
+        </div>
+
+        <div id="alert-res" class="alert mt-16"></div>
+    </div>
+
+    <!-- Liste des réservations actives -->
+    <div class="card">
+        <h2>Réservations Enregistrées (Simulation BDD MySQL)</h2>
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Client</th>
+                        <th>Trajet</th>
+                        <th>Véhicule</th>
+                        <th>Chauffeur</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody id="table-reservations">
+                    <tr>
+                        <td>#RES-101</td>
+                        <td>Association Sportive Lyon</td>
+                        <td>Lyon → Chamonix</td>
+                        <td>Mercedes Tourismo</td>
+                        <td>Jean Dupont</td>
+                        <td><span style="color:var(--accent-green); font-weight:600">Confirmée</span></td>
+                    </tr>
+                    <tr>
+                        <td>#RES-102</td>
+                        <td>Comité d'Entreprise Tech</td>
+                        <td>Paris → Mont Saint-Michel</td>
+                        <td>Iveco Magelys</td>
+                        <td>Karim Belkacem</td>
+                        <td><span style="color:var(--accent2); font-weight:600">En cours</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Architecture & Code Source -->
+    <div class="card">
+        <h2>Schéma de la Base de Données (MySQL)</h2>
+        <div class="result-box" style="font-size:0.8rem; line-height:1.7;">-- Tables relationnelles de l'application
+CREATE TABLE vehicules (
+    id_vehicule INT PRIMARY KEY AUTO_INCREMENT,
+    immatriculation VARCHAR(15) UNIQUE NOT NULL,
+    modele VARCHAR(50) NOT NULL,
+    capacite INT NOT NULL,
+    statut ENUM('disponible', 'en_trajet', 'maintenance') DEFAULT 'disponible'
+);
+
+CREATE TABLE chauffeurs (
+    id_chauffeur INT PRIMARY KEY AUTO_INCREMENT,
+    nom VARCHAR(50) NOT NULL,
+    prenom VARCHAR(50) NOT NULL,
+    telephone VARCHAR(15),
+    statut ENUM('disponible', 'conge', 'en_mission') DEFAULT 'disponible'
+);
+
+CREATE TABLE reservations (
+    id_reservation INT PRIMARY KEY AUTO_INCREMENT,
+    nom_client VARCHAR(100) NOT NULL,
+    destination VARCHAR(100) NOT NULL,
+    date_depart DATETIME NOT NULL,
+    id_vehicule INT,
+    id_chauffeur INT,
+    statut ENUM('en_attente', 'confirmee', 'annulee') DEFAULT 'confirmee',
+    FOREIGN KEY (id_vehicule) REFERENCES vehicules(id_vehicule),
+    FOREIGN KEY (id_chauffeur) REFERENCES chauffeurs(id_chauffeur)
+);</div>
+    </div>
+
+    <div class="card">
+        <h2>Technologies & Compétences BTS SIO</h2>
+        <span class="tech-tag">PHP</span>
+        <span class="tech-tag">MySQL</span>
+        <span class="tech-tag">PDO / Requêtes préparées</span>
+        <span class="tech-tag">CRUD</span>
+        <span class="tech-tag">HTML5 / CSS3</span>
+    </div>
+</div>
+
+<script>
+var compteur = 103;
+
+function ajouterReservation() {
+    var client = document.getElementById('client').value.trim();
+    var dest = document.getElementById('destination').value;
+    var vehicule = document.getElementById('vehicule').value;
+    var chauffeur = document.getElementById('chauffeur').value;
+    var alertEl = document.getElementById('alert-res');
+
+    if (!client) {
+        alertEl.textContent = 'Veuillez renseigner le nom du client.';
+        alertEl.className = 'alert show error';
+        return;
+    }
+
+    var tbody = document.getElementById('table-reservations');
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td>#RES-' + compteur++ + '</td>' +
+                   '<td>' + client + '</td>' +
+                   '<td>' + dest + '</td>' +
+                   '<td>' + vehicule.split(' (')[0] + '</td>' +
+                   '<td>' + chauffeur.split(' (')[0] + '</td>' +
+                   '<td><span style="color:var(--accent-green); font-weight:600">Confirmée</span></td>';
+    tbody.appendChild(tr);
+
+    alertEl.textContent = '✓ Réservation #RES-' + (compteur - 1) + ' insérée avec succès dans la base MySQL (simulation).';
+    alertEl.className = 'alert show success';
+    document.getElementById('client').value = '';
+}
+
+function reinitialiser() {
+    document.getElementById('client').value = '';
+    document.getElementById('alert-res').className = 'alert';
+}
+</script>
+
+</body>
+</html>

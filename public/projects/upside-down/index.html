@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio de Marvin — The Upside Down</title>
+  <meta name="description" content="Portfolio numérique de Marvin — Inspiré par Stranger Things">
+  <link rel="stylesheet" href="assets/stranger-things.css">
+  <link rel="stylesheet" href="assets/vecna-ai.css">
+  <script>
+    // Immediate persistence check to hide intro screens before they render
+    if (sessionStorage.getItem('portal_seen') && performance.getEntriesByType('navigation')[0]?.type !== 'reload') {
+      document.documentElement.classList.add('portal-skipped-active');
+    }
+  </script>
+</head>
+
+<body>
+
+  <!-- AUDIO: Soundscapes -->
+  <audio id="st-audio" loop preload="auto">
+    <source src="https://archive.org/download/tvtunes_32890/Stranger%20Things.mp3" type="audio/mpeg">
+    <source src="assets/stranger-things-theme.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Transition Audio: Running Up That Hill (Kate Bush) -->
+  <audio id="transition-audio" preload="auto">
+    <source src="https://archive.org/download/KateBushrunningupthathill/Kate_Bush__Running_Up_That_Hill__12___.mp3"
+      type="audio/mpeg">
+    <source src="assets/running-up-that-hill.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Vortex SFX -->
+  <audio id="vortex-sfx" preload="auto">
+    <source src="https://mixkit.co/static/media/whoosh-movement-soft-2720.5f5b4f8d.mp3" type="audio/mpeg">
+    <source src="assets/vortex.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Portal Continuation Audio -->
+  <audio id="portal-audio-continuation" preload="none">
+    <source src="https://danonmarvin8-gif.github.io/JobFlow-AI-Robot/assets/" type="audio/mpeg">
+  </audio>
+
+  <!-- Playlist Tracks (Preload Metadata Only) -->
+  <audio id="st-title-sequence-hd" preload="none">
+    <source src="https://danonmarvin8-gif.github.io/JobFlow-AI-Robot/assets/" type="audio/mpeg">
+  </audio>
+
+  <audio id="kate-bush-full" preload="none">
+    <source src="https://danonmarvin8-gif.github.io/JobFlow-AI-Robot/assets/" type="audio/mpeg">
+  </audio>
+
+  <!-- Scanlines + Vignette overlays -->
+  <div class="scanlines"></div>
+  <div class="vignette"></div>
+  <div class="portal-flash"></div>
+
+  <!-- ==================================
+         PHASE 0 — CLICK TO START
+         ================================== -->
+  <div id="click-screen">
+    <div class="click-text">Entrer dans l'Upside Down</div>
+    <div class="click-sub">▸ Cliquer pour commencer ▸</div>
+  </div>
+
+  <!-- ==================================
+         PHASE 1 — LOADING SCREEN
+         ================================== -->
+  <div id="loading-screen">
+    <canvas id="loading-particles"></canvas>
+
+    <div class="st-title-container">
+      <div class="st-title-line line1">
+        <span class="st-letter">P</span><span class="st-letter">O</span><span class="st-letter">R</span><span
+          class="st-letter">T</span><span class="st-letter">F</span><span class="st-letter">O</span><span
+          class="st-letter">L</span><span class="st-letter">I</span><span class="st-letter">O</span>
+      </div>
+      <div class="st-title-line line2">
+        <span class="st-letter">D</span><span class="st-letter">E</span><span class="st-letter">&nbsp;</span><span
+          class="st-letter">M</span><span class="st-letter">A</span><span class="st-letter">R</span><span
+          class="st-letter">V</span><span class="st-letter">I</span><span class="st-letter">N</span>
+      </div>
+    </div>
+
+    <div class="loading-bar-container">
+      <div class="loading-bar-label">Ouverture du portail...</div>
+      <div class="loading-bar-track">
+        <div class="loading-bar-fill"></div>
+      </div>
+      <div class="loading-percent">0%</div>
+    </div>
+  </div>
+
+  <!-- ==================================
+         PHASE 2 — PORTAL TRANSITION
+         ================================== -->
+  <div id="portal-screen">
+    <div class="portal-organic-container">
+      <video id="portal-video" class="portal-video-asset" playsinline preload="metadata"
+        poster="assets/portal-gate.png">
+        <source src="https://danonmarvin8-gif.github.io/JobFlow-AI-Robot/assets/" type="video/mp4">
+      </video>
+      <div class="portal-vortex-overlay"></div>
+      <button id="skip-portal" class="skip-portal-btn" aria-label="Passer la cinématique d'introduction">Passer la
+        cinématique ▸</button>
+    </div>
+  </div>
+
+  <!-- ==================================
+         PHASE 3 — MAIN MENU
+         ================================== -->
+  <div id="main-menu">
+    <!-- Vecna's Lair AI Video Background -->
+    <div class="vecna-lair-bg">
+      <video id="menu-bg-video" loop autoplay playsinline muted class="lair-video" poster="assets/vecna-lair.png">
+        <source src="https://danonmarvin8-gif.github.io/JobFlow-AI-Robot/assets/" type="video/mp4">
+      </video>
+      <div class="portal-glow-bg"></div>
+    </div>
+
+    <canvas id="menu-particles"></canvas>
+    <div class="fog"></div>
+
+    <header class="menu-header">
+      <h1 class="menu-title">Portfolio de Marvin</h1>
+      <p class="menu-subtitle">BTS SIO — Bienvenue dans l'Upside Down</p>
+    </header>
+
+    <main class="menu-content">
+
+      <!-- Note: Les TP scolaires ont été transférés vers le portfolio principal BTS SIO -->
+
+      <!-- Missions Row -->
+      <section class="section-row">
+        <h2 class="section-title">📝 Les Missions du Labo</h2>
+        <div class="cards-row">
+
+          <a href="projets/Mission1.html?theme=st" class="episode-card">
+            <div class="card-thumbnail">
+              <span class="thumb-icon">🕵️</span>
+            </div>
+            <div class="card-body">
+              <div class="card-tag">Mission 1</div>
+              <div class="card-name">Rapport Initial</div>
+              <div class="card-desc">Introduction et travail pratique</div>
+            </div>
+          </a>
+
+          <a href="projets/Mission2.html?theme=st" class="episode-card">
+            <div class="card-thumbnail">
+              <span class="thumb-icon">🔒</span>
+            </div>
+            <div class="card-body">
+              <div class="card-tag">Mission 2</div>
+              <div class="card-name">Protocole de Sécurité</div>
+              <div class="card-desc">Certifications Cyber-sécurité</div>
+            </div>
+          </a>
+
+          <a href="projets/Mission3.html?theme=st" class="episode-card">
+            <div class="card-thumbnail">
+              <span class="thumb-icon">📜</span>
+            </div>
+            <div class="card-body">
+              <div class="card-tag">Mission 3</div>
+              <div class="card-name">Conformité RGPD</div>
+              <div class="card-desc">Réglementation et protection des données</div>
+            </div>
+          </a>
+
+          <a href="projets/Mission4.html?theme=st" class="episode-card">
+            <div class="card-thumbnail">
+              <span class="thumb-icon">⚠️</span>
+            </div>
+            <div class="card-body">
+              <div class="card-tag">Mission 4</div>
+              <div class="card-name">EBIOS Risk Manager</div>
+              <div class="card-desc">Analyse des risques d'intrusion</div>
+            </div>
+          </a>
+
+        </div>
+      </section>
+
+      <!-- Projets Row -->
+      <section class="section-row">
+        <h2 class="section-title">🏫 Les Projets</h2>
+        <div class="cards-row">
+
+          <a href="projets/TP1/TP1/Projet_scolaire/index.php?theme=st" class="episode-card">
+            <div class="card-thumbnail">
+              <span class="thumb-icon">🖥️</span>
+            </div>
+            <div class="card-body">
+              <div class="card-tag">Projet PHP</div>
+              <div class="card-name">Système de Gestion Scolaire</div>
+              <div class="card-desc">Application complète de gestion d'école avec PHP et MySQL</div>
+            </div>
+          </a>
+
+          <a href="Centre%20de%20formation%20SQL/login.php" class="episode-card">
+            <div class="card-thumbnail">
+              <span class="thumb-icon">🗄️</span>
+            </div>
+            <div class="card-body">
+              <div class="card-tag">Projet SQL</div>
+              <div class="card-name">Centre de Formation</div>
+              <div class="card-desc">Dashboards admin, enseignant et étudiant avec rôles et permissions</div>
+            </div>
+          </a>
+
+          <a href="Centre%20de%20formation%20SQL/bdd.php" class="episode-card">
+            <div class="card-thumbnail">
+              <span class="thumb-icon">📊</span>
+            </div>
+            <div class="card-body">
+              <div class="card-tag">Vitrine SQL</div>
+              <div class="card-name">Présentation Base de Données</div>
+              <div class="card-desc">Visualisation interactive des tables et schémas SQL</div>
+            </div>
+          </a>
+
+        </div>
+      </section>
+
+
+
+      <!-- Options BTS Row -->
+      <section class="section-row">
+        <h2 class="section-title">🎓 Options BTS SIO</h2>
+        <div class="cards-row">
+
+          <a href="options/Option_SLAM.html?theme=st" class="episode-card">
+            <div class="card-thumbnail">
+              <span class="thumb-icon">💻</span>
+            </div>
+            <div class="card-body">
+              <div class="card-tag">Option</div>
+              <div class="card-name">SLAM — Développement</div>
+              <div class="card-desc">Solutions Logicielles et Applications Métiers</div>
+            </div>
+          </a>
+
+          <a href="options/Option_SISR.html?theme=st" class="episode-card">
+            <div class="card-thumbnail">
+              <span class="thumb-icon">🌐</span>
+            </div>
+            <div class="card-body">
+              <div class="card-tag">Option</div>
+              <div class="card-name">SISR — Réseau</div>
+              <div class="card-desc">Solutions d'Infrastructure, Systèmes et Réseaux</div>
+            </div>
+          </a>
+
+        </div>
+      </section>
+
+      <!-- Modules Row -->
+      <section class="section-row">
+        <h2 class="section-title">📚 Modules de Formation</h2>
+        <div class="cards-row">
+
+          <a href="modules/Module1.html?theme=st" class="episode-card">
+            <div class="card-thumbnail">
+              <span class="card-episode-number">M1</span>
+            </div>
+            <div class="card-body">
+              <div class="card-tag">Module</div>
+              <div class="card-name">Module 1</div>
+              <div class="card-desc">Premier module de formation</div>
+            </div>
+          </a>
+
+          <a href="modules/Module2.html?theme=st" class="episode-card">
+            <div class="card-thumbnail">
+              <span class="card-episode-number">M2</span>
+            </div>
+            <div class="card-body">
+              <div class="card-tag">Module</div>
+              <div class="card-name">Module 2</div>
+              <div class="card-desc">Deuxième module de formation</div>
+            </div>
+          </a>
+
+          <a href="modules/Module3.html?theme=st" class="episode-card">
+            <div class="card-thumbnail">
+              <span class="card-episode-number">M3</span>
+            </div>
+            <div class="card-body">
+              <div class="card-tag">Module</div>
+              <div class="card-name">Module 3</div>
+              <div class="card-desc">Troisième module de formation</div>
+            </div>
+          </a>
+
+        </div>
+      </section>
+
+      <!-- Certifications Row -->
+      <section class="section-row">
+        <h2 class="section-title">🏆 Certifications</h2>
+        <div class="cards-row">
+
+          <a href="certificats/Mes_Certif.html?theme=st" class="episode-card">
+            <div class="card-thumbnail">
+              <span class="thumb-icon">🏅</span>
+            </div>
+            <div class="card-body">
+              <div class="card-tag">Certif</div>
+              <div class="card-name">Mes Certifications</div>
+              <div class="card-desc">Diplômes et certifications professionnelles obtenues</div>
+            </div>
+          </a>
+
+        </div>
+      </section>
+
+      <!-- Projets Personnels Row -->
+      <section class="section-row">
+        <h2 class="section-title">✨ Projets Personnels</h2>
+        <div class="cards-row">
+
+          <a href="Portfolio%20disney/index.html" class="episode-card">
+            <div class="card-thumbnail">
+              <span class="thumb-icon">🏰</span>
+            </div>
+            <div class="card-body">
+              <div class="card-tag">Projet Perso</div>
+              <div class="card-name">Portfolio Disney</div>
+              <div class="card-desc">Mon portfolio basé sur l'univers Disney</div>
+            </div>
+          </a>
+
+          <a href="today-at-marvin/index.html" class="episode-card">
+            <div class="card-thumbnail">
+              <span class="thumb-icon">📅</span>
+            </div>
+            <div class="card-body">
+              <div class="card-tag">Projet Perso</div>
+              <div class="card-name">Today At Marvin</div>
+              <div class="card-desc">Projet personnel Today At Marvin</div>
+            </div>
+          </a>
+
+          <a href="Portfolio%20dbz/index.html" class="episode-card">
+            <div class="card-thumbnail">
+              <span class="thumb-icon">🐉</span>
+            </div>
+            <div class="card-body">
+              <div class="card-tag">Projet Perso</div>
+              <div class="card-name">Portfolio DBZ</div>
+              <div class="card-desc">Mon portfolio sur le thème Dragon Ball Z</div>
+            </div>
+          </a>
+
+          <a href="JobFlow-AI/index.html" class="episode-card">
+            <div class="card-thumbnail">
+              <span class="thumb-icon">🤖</span>
+            </div>
+            <div class="card-body">
+              <div class="card-tag">Projet Perso</div>
+              <div class="card-name">JobFlow-AI</div>
+              <div class="card-desc">Intelligence Artificielle pour les flux de travail</div>
+            </div>
+          </a>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Music toggle button -->
+  <button id="music-toggle" class="music-toggle" title="Musique ON/OFF"
+    aria-label="Activer ou désactiver la musique">🔊</button>
+
+  <script src="assets/stranger-things.js"></script>
+  <!-- VECNA AI ASSISTANT -->
+  <script src="assets/vecna-animated.js"></script>
+  <script src="assets/vecna-ai.js"></script>
+</body>
+
+</html>
