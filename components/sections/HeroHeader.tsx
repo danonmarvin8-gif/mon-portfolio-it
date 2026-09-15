@@ -3,6 +3,7 @@
 import { useRef, useEffect } from 'react'
 import { motion, useMotionValue, useTransform, useSpring, useScroll } from 'framer-motion'
 import { useAccessibility } from '@/components/core/AccessibilityProvider'
+import { resolveProjectUrl } from '@/lib/sessions'
 
 // ─── Floating Orb ────────────────────────────────────────────────────────────
 function FloatingOrb({
@@ -264,7 +265,8 @@ export function HeroHeader() {
             Voir mes projets →
           </motion.a>
           <motion.a
-            href="/CV_Marvin.pdf"
+            href={resolveProjectUrl('/CV_Marvin.pdf')}
+            download="CV_Marvin_Danon.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="rounded-pill px-8 py-3.5 text-sm font-semibold text-accent-violet border border-accent-violet/40 hover:border-accent-violet hover:bg-accent-violet/10 transition-all"
